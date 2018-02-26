@@ -1,0 +1,24 @@
+[submodule "mcutils"]
+	path = mcutils
+	url = https://github.com/mchaisso/mcutils.git
+[submodule "local_assembly/pbgreedyphase"]
+	path = local_assembly/pbgreedyphase
+	url = https://github.com/mchaisso/pbgreedyphase.git
+[submodule "pbsamstream"]
+	path = pbsamstream
+	url = https://github.com/mchaisso/pbsamstream.git
+[submodule "samtools"]
+	path = samtools
+	url = https://github.com/samtools/samtools.git
+[submodule "htslib"]
+	path = htslib
+	url = https://github.com/samtools/htslib.git
+[submodule "blasr"]
+	path = blasr
+	url = https://github.com/mchaisso/blasr.git
+[submodule "hgsvg"]
+	path = hgsvg
+	url = https://github.com/EichlerLab/hgsvg
+[submodule "vt"]
+	path = vt
+	url = https://github.com/atks/vt.git
