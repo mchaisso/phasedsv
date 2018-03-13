@@ -1,0 +1,5 @@
+#!/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/bin/python
+import sys
+from GenomicConsensus.main import main
+if __name__ == '__main__':
+    sys.exit(main())
