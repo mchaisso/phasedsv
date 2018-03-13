@@ -1,7 +1,7 @@
 Phased-SV
 =========
 
-Local assembly based SV calling with single-molecule sequencing reads
+Local assembly based SV detection using single-molecule sequencing reads
 and a phased SNV VCF file.
 
 Summary
@@ -15,8 +15,14 @@ This software pipeline performs SV calling with four main steps:
 
 Installation
 -----------
+1. Required software.
+    htslib >= 1.2.1
+    samtools >= 1.2
+		tabix >= 0.2.5
+		bedtools >= 2.27.1
+    vt >= 0.5772
 
-1. Quiver.
+2. Install quiver.
 
 Install quiver binary scripts into quiver/bin, and supporting
 libraries into quiver/lib.  Because this can be a cumbersome task
@@ -24,7 +30,10 @@ depending on your software environment, precompiled binaries are
 distributed in quiver_bin. If you wish to avoid trying to install
 quiver/arrow from source, move the quiver_bin directory into quiver:
 
-```mv quiver_bin quiver```
+```mv quiver_bin quiver
+export PATH=$PATH:$PWD/quiver/bin
+export PYTHONPATH=$PYTHONPATH:$PWD/quiver/lib/python2.7/site-packages/
+```
 
 
 
