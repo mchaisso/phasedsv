@@ -21,14 +21,14 @@ git clone --recursive https://github.com/mchaisso/phasedsv.git
 
 1. Required software. This should be default software accessible by your path.
 
-    samtools >= 1.2 ( htslib >= 1.2.1)
-		tabix >= 0.2.5
-		bedtools >= 2.27.1
-    vt >= 0.5772
-		ucsc software (bedToBigBed)
-    R
-		virtualenv
-		canu 
+  . samtools >= 1.2 ( htslib >= 1.2.1)
+	.	tabix >= 0.2.5
+	.	bedtools >= 2.27.1
+  . vt >= 0.5772
+	.	ucsc software (bedToBigBed)
+  . R
+  . virtualenv
+	.	canu 
 
 2. Install quiver.
 
