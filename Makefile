@@ -17,8 +17,8 @@ hdf5/hdf5-1.8.20/README.txt:
 	cd hdf5 && wget https://support.hdfgroup.org/ftp/HDF5/current18/src/hdf5-1.8.20.tar.gz
 	cd hdf5 && tar xvf hdf5-1.8.20.tar.gz
 
-lib/libhdf5_cpp.a: hdf5/hdf5-1.8.20/README.txt
-	cd hdf5/hdf5-1.8.20 &&./configure --prefix=$(PWD)/../../ --enable-cxx &&\
+hdf5/build/lib/libhdf5_cpp.a: hdf5/hdf5-1.8.20/README.txt
+	cd hdf5/hdf5-1.8.20 &&./configure --prefix=$(PWD)/hdf5/build --enable-cxx &&\
     make -j 8 && make install
 
 hgsvg/blasr/alignment/bin/blasr:
