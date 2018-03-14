@@ -1,7 +1,7 @@
-include /home/cmb-16/mjc/mchaisso/projects/phasedsv/local_assembly/Configure.mak
+include Configure.mak
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 MIN_QUALITY?=20
-
+MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 # other setup
 CWD=$(shell pwd)
@@ -37,7 +37,7 @@ assembly.fasta: reads.fasta
 #	-rm -rf templocal
 
 assembly.bam: assembly.fasta 
-	$(BLASR)/alignment/bin/blasr $(SAM) assembly.fasta  \
+	$(MAKE_DIR)/../hgsvg/alignment/bin/blasr $(SAM) assembly.fasta  \
         -clipping subread -passthrough -sam -nproc 8 -out  /dev/stdout -preserveReadTitle | \
         $(PBS)/pbsamstream/pbsamstream  - | \
          $(PBS)/samtools/samtools view -bS - | $(PBS)/samtools/samtools sort -T tmp -o assembly.bam
@@ -57,7 +57,7 @@ assembly.consensus.fasta.sam: assembly.consensus.fasta
 	bedtools slop -i region.bed -g $(REF).fai -b 10000 | awk '{ print $$1":"$$2"-"$$3;}' > region.wide
 	region=`cat region.wide`
 	samtools faidx $(REF) `cat region.wide` > target.ref.fasta
-	$(BLASR)/alignment/bin/blasr assembly.consensus.fasta target.ref.fasta -sam -bestn 1 -maxMatch 30 -sdpTupleSize 9 -indelRate 3 -affineAlign -affineOpen 8 -affineExtend 0  -clipping soft | $(PBS)/local_assembly/shiftSamPos > $@
+	$(MAKE_DIR/)/alignment/bin/blasr assembly.consensus.fasta target.ref.fasta -sam -bestn 1 -maxMatch 30 -sdpTupleSize 9 -indelRate 3 -affineAlign -affineOpen 8 -affineExtend 0  -clipping soft | $(PBS)/local_assembly/shiftSamPos > $@
 
 clean:
 	echo "Not cleaning up after Canu"
