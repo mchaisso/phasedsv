@@ -31,7 +31,7 @@ git clone --recursive https://github.com/mchaisso/phasedsv.git
 
 2. Install quiver.
 
-Install quiver binary scripts into quiver/bin, and supporting
+Install quiver scripts into quiver/bin, and supporting
 libraries into quiver/lib.  Because this can be a cumbersome task
 depending on your software environment, precompiled binaries are
 distributed in quiver_bin. If you wish to avoid trying to install
