@@ -36,7 +36,7 @@ Install quiver binary scripts into quiver/bin, and supporting
 libraries into quiver/lib.  Because this can be a cumbersome task
 depending on your software environment, precompiled binaries are
 distributed in quiver_bin. If you wish to avoid trying to install
-quiver/arrow from source, move the quiver_bin directory into quiver:
+quiver/arrow from source, move the quiver_bin directory into quiver with the commands below. This is built for 64-bit CentOS.
 
 ```mv quiver_bin quiver
 export PATH=$PATH:$PWD/quiver/bin
@@ -50,5 +50,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/quiver/lib
 
 4. Add python requirements
 
-```source ./setup_virtualenv.sh```
+```cd hgsvg && ./setup_virtualenv.sh```
+
+
 
