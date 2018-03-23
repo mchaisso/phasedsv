@@ -37,11 +37,8 @@ assembly.fasta: reads.fasta
 #	module load numpy/latest; ~mchaisso/software/mcsrc/UTILS/pcl reads.fasta | ~/scripts/stats.py >> report.txt
 #	-rm -rf templocal
 
-assembly.bam: assembly.fasta 
-	$(MAKE_DIR)/../hgsvg/blasr/alignment/bin/blasr $(SAM) assembly.fasta  \
-        -clipping subread -passthrough -sam -nproc 8 -out  /dev/stdout -preserveReadTitle | \
-        $(MAKE_DIR)/../pbsamstream/pbsamstream  - | \
-        $(MAKE_DIR)/../samtools/samtools view -bS - | $(MAKE_DIR)/../samtools/samtools sort -T tmp -o assembly.bam
+assembly.bam: assembly.fasta $(SAM)
+	export READ_SOURCE=$(READ_SOURCE) && $(MAKE_DIR)/MakeBamVersionWrapper.sh $(SAM)
 	samtools index assembly.bam
 
 assembly.bam.pbi: assembly.bam
