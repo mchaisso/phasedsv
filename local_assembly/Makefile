@@ -1,8 +1,12 @@
-all: shiftSamPos pbgreedyphase/partitionByPhasedSNVs
+all: shiftSamPos pbgreedyphase/partitionByPhasedSNVs blasr/alignment/bin/blasr
+
+MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 shiftSamPos: ShiftSamFromRegion.cpp
 	g++ $< -o $@
 
+blasr/alignment/bin/blasr:
+	cd blasr && make HDF5INCLUDEDIR=$(MAKE_DIR)/../include  HDF5LIBDIR=$(MAKE_DIR)/../lib
 
 mcutils/src/samToBed:
 	cd mcutils/src && make

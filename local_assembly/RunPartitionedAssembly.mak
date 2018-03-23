@@ -1,6 +1,7 @@
 # configuration for paths, etc
-include Configure.mak
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+include $(MAKE_DIR)/Configure.mak
+
 
 COVERAGE?=10
 CHROM=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 1)

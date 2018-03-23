@@ -1,18 +1,74 @@
 #!/usr/bin/env bash
+
+usage()
+{
+cat << EOF
+		RunTrioTiledAssemblyOnRegions.sh regions paramfile [ --jobname jobname ] [--index idx ] [ --delay delay]
+		-j job  Will submit jobs under this name to sge.
+		-i idx  The index of this job, 1... #jobs. When less than delay, sleep
+		               for a few seconds to avoid slamming a shared filesystem with 
+		               too many jobs that read from bams at once. It is assumed that 
+		               after a certain number of jobs the sysem will be in steady state.
+		               Typically, with 200 jobs submitted, steady state is ~1 new job every
+		               3s.
+		-d del  Delay job starts for indices less than idx
+EOF
+exit 1
+
+}
+
+BASE=$(dirname $0)
+
+if [ $# -lt 2 ]; then
+		usage
+		exit
+fi
 REGIONS=$1
-JOBNAME=$2
-ASSEMBLER=$3
-PARAMFILE=$4
-INDEX=$5
-DODELAY=$6
+shift
+PARAMFILE=$1
+shift
+JOBNAME="loc_asm"
+DELAY=1
+INDEX=1
+while getopts “hj:i:d:” OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         j)
+             JOBNAME=$OPTARG
+             ;;
+         i)
+             INDEX=$OPTARG
+             ;;
+         d)
+             DELAY=$OPTARG
+             ;;
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+
+INDEX=1
+DODELAY=1
+JOBNAME=loc_asm
+
+ASSEMBLER=$BASE/RunTrioPartionedAssemblies.mak
+
 
 
 if [ $INDEX -lt $DODELAY ]; then
 		v=$(($INDEX*5))
 		sleep $v"s"
 fi
-echo "starting"
-DIR=/$TMPDIR/$USER/lasm/$$/
+
+DIR=$TMPDIR/$USER/lasm/$$/
+echo "starting" $DIR
 mkdir -p samfiles
 mkdir -p assemblies
 mkdir -p records
@@ -22,13 +78,8 @@ mkdir -p records
 PARAMS=`cat $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
 
-
-source /etc/profile.d/modules.sh
-module load mpc/0.8.2; module load mpfr/3.1.0; module load gmp/5.0.2; module load gcc/latest
-module load python/2.7.3 ;
-module load htslib/1.3.2
-module load samtools/latest
-module load bedtools/latest
+echo "sourcing " $BASE/../config.sh
+source $BASE/../config.sh
 
 mkdir -p $DIR
 
@@ -41,7 +92,7 @@ bedtools sort -i $DIR/Regions.bed | bedtools merge | awk '{ print $1":"$2"-"$3;}
 
 for r in `cat $DIR/Regions.rgn`; do
 		n=`echo $r | tr ":" "."`
-		samtools merge -u -f -b $CHBAMS -R $r $DIR/reads.region.ch.$n.bam
+		samtools merge -u -f -b $BAMS -R $r $DIR/reads.region.ch.$n.bam
 		samtools index $DIR/reads.region.ch.$n.bam
 
 		samtools merge -u -f -b $MOBAMS -R $r $DIR/reads.region.mo.$n.bam
@@ -65,11 +116,17 @@ ls $DIR/reads.region.mo.bam > $DIR/reads.region.mo.bam.fofn
 ls $DIR/reads.region.fa.bam > $DIR/reads.region.fa.bam.fofn
 
 
-grep -v "CHBAMS=" $PARAMFILE > $DIR/params.txt
-echo "CHBAMS=$DIR/reads.region.ch.bam.fofn" >> $DIR/params.txt
+#
+# Set up param file for local files.
+#
+grep -v "BAMS=" $PARAMFILE > $DIR/params.txt
+
+echo "BAMS=$DIR/reads.region.ch.bam.fofn" >> $DIR/params.txt
 echo "MOBAMS=$DIR/reads.region.mo.bam.fofn" >> $DIR/params.txt
 echo "FABAMS=$DIR/reads.region.fa.bam.fofn" >> $DIR/params.txt
+echo "cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $JOBNAME $BASE/RunTrioPartionedAssemblies.mak  $DIR/params.txt $DIR "
 
-echo "cat $DIR/Regions.txt | xargs -P 3 -I {} /net/eichler/vol5/home/mchaisso/projects/PacBioSequencing/scripts/local_assembly/RunTiledAssembly.sh {} $JOBNAME /net/eichler/vol5/home/mchaisso/projects/PacBioSequencing/scripts/local_assembly/RunTrioPartionedAssemblies.mak  $DIR/params.txt $DIR "
-
-cat $DIR/Regions.txt | xargs -P 3 -I {} /net/eichler/vol5/home/mchaisso/projects/PacBioSequencing/scripts/local_assembly/RunTiledAssembly.sh {} $JOBNAME /net/eichler/vol5/home/mchaisso/projects/PacBioSequencing/scripts/local_assembly/RunTrioPartionedAssemblies.mak $DIR/params.txt $DIR
+#
+# Local (to node) assemble cluster.
+#
+cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $DIR/params.txt -j $JOBNAME -a $BASE/RunTrioPartionedAssemblies.mak -d $DIR

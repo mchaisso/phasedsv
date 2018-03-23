@@ -1,7 +1,8 @@
-include Configure.mak
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 MIN_QUALITY?=20
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+include $(MAKE_DIR)/Configure.mak
+SHELL=/bin/bash
 
 # other setup
 CWD=$(shell pwd)
@@ -16,9 +17,9 @@ help:
 
 
 reads.fasta: $(SAM)
-	grep -v "^@" $(SAM) | $(PBS)/local_assembly/StreamSamToFasta.py | $(PBS)/local_assembly/FormatFasta.py --fakename  > $@
+	grep -v "^@" $(SAM) | $(MAKE_DIR)/StreamSamToFasta.py | $(MAKE_DIR)/FormatFasta.py --fakename  > $@
 
-# corMhapSensitivity=high corMinCoverage=2 errorRate=0.035 trimReadsCoverage=4 cnsMemory=2G cnsThreads=1  corMhapSensitivity=high corMinCoverage=3 errorRate=0.025 errorRate=0.10 utgOverlapper=ovl utgOvlErrorRate=0.15
+
 assembly.fasta: reads.fasta
 	$(CANU_DIR)/canu -pacbio-raw reads.fasta genomeSize=60000 -d assembly -p asm useGrid=false  gnuplotTested=true  corMhapSensitivity=high corMinCoverage=1 cnsThreads=4 ovlThreads=4 mhapThreads=4 contigFilter="2 1000 1.0 1.0 2"
 	if [ -s assembly/asm.contigs.fasta ]; then \
@@ -37,18 +38,18 @@ assembly.fasta: reads.fasta
 #	-rm -rf templocal
 
 assembly.bam: assembly.fasta 
-	$(MAKE_DIR)/../hgsvg/alignment/bin/blasr $(SAM) assembly.fasta  \
+	$(MAKE_DIR)/../hgsvg/blasr/alignment/bin/blasr $(SAM) assembly.fasta  \
         -clipping subread -passthrough -sam -nproc 8 -out  /dev/stdout -preserveReadTitle | \
-        $(PBS)/pbsamstream/pbsamstream  - | \
-         $(PBS)/samtools/samtools view -bS - | $(PBS)/samtools/samtools sort -T tmp -o assembly.bam
+        $(MAKE_DIR)/../pbsamstream/pbsamstream  - | \
+        $(MAKE_DIR)/../samtools/samtools view -bS - | $(MAKE_DIR)/../samtools/samtools sort -T tmp -o assembly.bam
 	samtools index assembly.bam
 
 assembly.bam.pbi: assembly.bam
-	source $(DEPLOY)/setup-env.sh && $(DEPLOY)/bin/pbindex assembly.bam
+	source $(MAKE_DIR)/../quiver/setup-env.sh && $(MAKE_DIR)/../quiver/bin/pbindex assembly.bam
 
 assembly.consensus.fasta: assembly.bam assembly.bam.pbi assembly.fasta
 	samtools faidx assembly.fasta
-	source $(DEPLOY)/setup-env.sh && export LD_LIBRARY_PATH=/usr/usc/gnu/gcc/5.3.0/lib64/:$$LD_LIBRARY_PATH && $(DEPLOY)/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
+	source $(MAKE_DIR)/../quiver/setup-env.sh && $(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
 	awk '{ if (substr($$1,0,1) == ">") {print $$1"/$(HAP)";} else { print;} }' $@ > $@.tmp
 	mv -f $@.tmp $@
 
@@ -57,7 +58,7 @@ assembly.consensus.fasta.sam: assembly.consensus.fasta
 	bedtools slop -i region.bed -g $(REF).fai -b 10000 | awk '{ print $$1":"$$2"-"$$3;}' > region.wide
 	region=`cat region.wide`
 	samtools faidx $(REF) `cat region.wide` > target.ref.fasta
-	$(MAKE_DIR/)/alignment/bin/blasr assembly.consensus.fasta target.ref.fasta -sam -bestn 1 -maxMatch 30 -sdpTupleSize 9 -indelRate 3 -affineAlign -affineOpen 8 -affineExtend 0  -clipping soft | $(PBS)/local_assembly/shiftSamPos > $@
+	$(MAKE_DIR)/../hgsvg/blasr/alignment/bin/blasr assembly.consensus.fasta target.ref.fasta -sam -bestn 1 -maxMatch 30 -sdpTupleSize 9 -indelRate 3 -affineAlign -affineOpen 8 -affineExtend 0  -clipping soft | $(MAKE_DIR)/shiftSamPos > $@
 
 clean:
 	echo "Not cleaning up after Canu"

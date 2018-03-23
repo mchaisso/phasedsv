@@ -1,10 +1,14 @@
 # configuration for paths, etc
-include $(PBS)/local_assembly/Configure.mak
+
+MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+include $(MAKE_DIR)/Configure.mak
+
 
 COVERAGE?=10
-
+SHELL=/bin/bash
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 STREGION=$(shell echo $(REGION) | sed 's/\./:/')
+SAMASSEMBLER=$(MAKE_DIR)/CanuSamAssembly.mak
 
 all: h0.sam h0/h0.fasta h1.sam h1/h1.fasta assembly.consensus.fasta.sam \
   assemblies samfiles results
@@ -13,28 +17,28 @@ help:
 	echo "Usage: make -f RunDiploidAssembly.py REGION=chr:start-end"
 	echo "REF=/path/to/reference.fasta "
 	echo "BAMS=aligned_bams.fofn "
-  echo "SAMASSEMBLER=/path/to/sam_assembler.mak "
-  echo " CH=child-id "
-  echo " MAKE_CONFIG=configfile.mak "
-  echo " MOBAMS=path-to-mother-bams MO=mother-id MO_INHERIT=mo.inherit.bam.gz "
-  echo " FABAMS=path-to-mother-bams fA=mother-id FA_INHERIT=mo.inherit.bam.gz "
+	echo "SAMASSEMBLER=/path/to/sam_assembler.mak "
+	echo " SAMPLE=child-id "
+	echo " MAKE_CONFIG=configfile.mak "
+	echo " MOBAMS=path-to-mother-bams MO=mother-id MO_INHERIT=mo.inherit.bam.gz "
+	echo " FABAMS=path-to-mother-bams fA=mother-id FA_INHERIT=mo.inherit.bam.gz "
 
 
 region.vcf:
 	tabix -h $(VCF) $(STREGION) > $@
 
 h0.sam: region.vcf
-	head -1 $(CHBAMS) | xargs -i samtools view -H {} > reads.sam
-	cat $(CHBAMS) | xargs -i samtools view -q 30 {} $(STREGION)  |  sed -e "s/qi/iq/" -e "s/qd/dq/" -e "s/qs/sq/" -e "s/qm/mq/" -e "s/td/dt/" -e "s/ts/st/" >> reads.sam
-	$(PBS)/local_assembly/samToBed reads.sam | $(PBS)/local_assembly/DetectChimeras.py > filter.list
-	grep -v -f filter.list reads.sam | $(PBS)/local_assembly/RemoveShortSubreads.py 500 | $(PBG)/partitionByPhasedSNVs --vcf region.vcf --sam /dev/stdin --rgn $(REGION) --pad 100000 --h1 h0.sam --h2 h1.sam --ref $(REF) --minGenotyped 1 --summary summary.txt --sample $(CH) --unassigned unassigned.sam --minScoreDifference 1 --nw-window 7
+	head -1 $(BAMS) | xargs -i samtools view -H {} > reads.sam
+	cat $(BAMS) | xargs -i samtools view -q 30 {} $(STREGION)  |  sed -e "s/qi/iq/" -e "s/qd/dq/" -e "s/qs/sq/" -e "s/qm/mq/" -e "s/td/dt/" -e "s/ts/st/" >> reads.sam
+	$(MAKE_DIR)/../mcutils/src/samToBed reads.sam | $(MAKE_DIR)/DetectChimeras.py > filter.list
+	grep -v -f filter.list reads.sam | $(MAKE_DIR)/RemoveShortSubreads.py 500 | $(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam /dev/stdin --rgn $(REGION) --pad 100000 --h1 h0.sam --h2 h1.sam --ref $(REF) --minGenotyped 1 --summary summary.txt --sample $(SAMPLE) --unassigned unassigned.sam --minScoreDifference 1 --nw-window 7
 	-cp h0.sam h0.sam.bak
 	-cp h1.sam h1.sam.bak
-	$(PBS)/local_assembly/ConcatenateUnassignedReads.sh $(PBS)/local_assembly/ConcatenateUnassignedReads.py $(VCF) $(CH) $(REGION) 20 unassigned.sam  h0.sam h1.sam
+	$(MAKE_DIR)/ConcatenateUnassignedReads.sh $(MAKE_DIR)/ConcatenateUnassignedReads.py $(VCF) $(SAMPLE) $(REGION) 20 unassigned.sam  h0.sam h1.sam
 
   # partition parents now
 	echo "Selecting from mother"
-	$(PBS)/local_assembly/SelectInherited.sh \
+	$(MAKE_DIR)/SelectInherited.sh \
    -b $(MOBAMS) \
    -v $(VCF) \
    -i $(MO_INHERIT) \
@@ -47,7 +51,7 @@ h0.sam: region.vcf
 	echo "catted  mo.inherited.sam to h`cat mo.chrom.txt`.sam "
 	echo "Selecting from father."
   # partition parents now
-	$(PBS)/local_assembly/SelectInherited.sh \
+	$(MAKE_DIR)/SelectInherited.sh \
    -b $(FABAMS) \
    -v $(VCF) \
    -i $(FA_INHERIT) \
@@ -74,11 +78,11 @@ h1.sam: h0.sam
 
 h0/h0.fasta: h0.sam
 	mkdir -p h0
-	cd h0 && source $(PBS)/local_assembly/setup_assembly.sh && make -f $(SAMASSEMBLER) SAM=../h0.sam HAP=H0 REGION=$(STREGION) REF=$(REF) COV=$(COVERAGE) && mv assembly.consensus.fasta h0.fasta  && mv assembly.consensus.fasta.sam ../h0.var.sam 
+	cd h0 && source $(MAKE_DIR)/setup_assembly.sh && make -f $(SAMASSEMBLER) SAM=../h0.sam HAP=H0 REGION=$(STREGION) REF=$(REF) COV=$(COVERAGE) && mv assembly.consensus.fasta h0.fasta  && mv assembly.consensus.fasta.sam ../h0.var.sam 
 
 h1/h1.fasta: h1.sam
 	mkdir -p h1
-	cd h1 && source $(PBS)/local_assembly/setup_assembly.sh && make -f $(SAMASSEMBLER) SAM=../h1.sam HAP=H1 REGION=$(STREGION) REF=$(REF) COV=$(COVERAGE) && mv assembly.consensus.fasta h1.fasta && mv assembly.consensus.fasta.sam ../h1.var.sam 
+	cd h1 && source $(MAKE_DIR)/setup_assembly.sh && make -f $(SAMASSEMBLER) SAM=../h1.sam HAP=H1 REGION=$(STREGION) REF=$(REF) COV=$(COVERAGE) && mv assembly.consensus.fasta h1.fasta && mv assembly.consensus.fasta.sam ../h1.var.sam 
 
 assembly.consensus.fasta.sam: h0.var.sam h1.var.sam
 	cat h0.var.sam | awk '{ print $$0"\tHA:i:1";}' > $@

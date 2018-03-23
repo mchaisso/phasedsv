@@ -22,3 +22,6 @@
 [submodule "vt"]
 	path = vt
 	url = https://github.com/atks/vt.git
+[submodule "local_assembly/blasr"]
+	path = local_assembly/blasr
+	url = https://github.com/mchaisso/blasr.git

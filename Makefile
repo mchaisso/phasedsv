@@ -1,13 +1,17 @@
 all: local_assembly/shiftSamPos \
+	mcutils/src/samToBed \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
   lib/libhdf5_cpp.a \
   hgsvg/blasr/alignment/bin/blasr \
-  pbsamstream/pbsamstream
+  pbsamstream/pbsamstream \
+  samtools/samtools
 
 
 local_assembly/shiftSamPos:
 	cd local_assembly && make
 
+mcutils/src/samToBed:
+	cd mcutils/src && make -j 8
 
 local_assembly/pbgreedyphase/partitionByPhasedSNVs:
 	cd local_assembly/pbgreedyphase && make
@@ -27,9 +31,5 @@ hgsvg/blasr/alignment/bin/blasr:
 pbsamstream/pbsamstream:
 	cd pbsamstream && make
 
-
-
-
-
-
-
+samtools/samtools:
+	cd samtools && make
