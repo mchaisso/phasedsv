@@ -85,5 +85,7 @@ if [ $nhap == 1 ]; then
 fi
 
 
+touch $member.inherited.sam
+
 		
 
