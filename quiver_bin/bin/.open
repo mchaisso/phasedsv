@@ -1,0 +1,12 @@
+#!/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'pbcore==1.4.2','console_scripts','.open'
+__requires__ = 'pbcore==1.4.2'
+import re
+import sys
+from pkg_resources import load_entry_point
+
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(
+        load_entry_point('pbcore==1.4.2', 'console_scripts', '.open')()
+    )

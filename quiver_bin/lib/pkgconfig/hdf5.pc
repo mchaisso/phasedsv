@@ -1,0 +1,7 @@
+prefix=/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment
+Name: HDF5
+Description: Hierarchical Data Format 5 (HDF5)
+Version: 1.8.16
+Requires:
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lhdf5_hl -lhdf5
