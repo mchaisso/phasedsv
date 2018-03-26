@@ -31,19 +31,19 @@ correctly formatted bam files.
 
 2. Configuration.
 
-  2.1. `phasedsv/config.sh` : configuration of the python environment,
+    2.1. `phasedsv/config.sh` : configuration of the python environment,
   and the LD_LIBRARY_PATH or PATH to access samtools and bedtools.  A
   sample script is included.
 
-  2.2 `phasedsv/local_assembly/Configure.mak`:  This sets up variables
+    2.2 `phasedsv/local_assembly/Configure.mak`:  This sets up variables
   used in the make files that run local assemblies. They need to point
   to the reference (indexed by samtools faidx and blasr sawriter), and
   the canu installation.
 
-	2.3 BAM fofn: this should be a file of complete paths to the bam or
+    2.3 BAM fofn: this should be a file of complete paths to the bam or
 	bams if the alignments are split into multiple bams.
 
-  2.4 Trio assembly.
+    2.4 Trio assembly.
 	   If you are running a trio assembly, you need to generate bed
 	   files that contain the regions which the parental reads may be
 	   unambiguously assigned.  The example below uses the phased vcf
