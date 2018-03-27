@@ -1,7 +1,7 @@
 all: local_assembly/shiftSamPos \
 	mcutils/src/samToBed \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
-  lib/libhdf5_cpp.a \
+  hdf5/build/lib/libhdf5_cpp.a \
   hgsvg/blasr/alignment/bin/blasr \
   pbsamstream/pbsamstream \
   samtools/samtools
