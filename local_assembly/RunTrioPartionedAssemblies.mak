@@ -47,7 +47,7 @@ h0.sam: region.vcf
    -R $(REF) \
    -s $(MO)
 
-	-grep -v "^@" mo.inherited.sam >> h`cat mo.chrom.txt|tr -d "\n"`.sam
+	-grep -v "^@" mo.inherited.sam >> h`cat mo.chrom.txt|tr -d "\n"`.sam || true
 	echo "catted  mo.inherited.sam to h`cat mo.chrom.txt`.sam "
 	echo "Selecting from father."
   # partition parents now
@@ -59,7 +59,7 @@ h0.sam: region.vcf
    -m fa \
    -R $(REF) \
    -s $(FA)
-	-grep -v "^@" fa.inherited.sam >> h`cat fa.chrom.txt | awk '{print $2;}'|tr -d "\n"`.sam
+	-grep -v "^@" fa.inherited.sam >> h`cat fa.chrom.txt | awk '{print $2;}'|tr -d "\n"`.sam || true
 
 
 
