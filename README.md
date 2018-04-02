@@ -31,14 +31,16 @@ correctly formatted bam files.
 
 2. Configuration.
 
-    2.1. `phasedsv/config.sh` : configuration of the python environment,
+    2.1. `phasedsv/setup_phasedsv.sh` : configuration of the python environment,
   and the LD_LIBRARY_PATH or PATH to access samtools and bedtools.  A
   sample script is included.
 
     2.2 `phasedsv/local_assembly/Configure.mak`:  This sets up variables
   used in the make files that run local assemblies. They need to point
   to the reference (indexed by samtools faidx and blasr sawriter), and
-  the canu installation.
+  the canu installation. The value of "READ_SOURCE" should be set to
+  "HGSVG_BAM" if running PacBio RSII alignments, and anything else (or
+  not set) otherwise.
 
     2.3 BAM fofn: this should be a file of complete paths to the bam or
 	bams if the alignments are split into multiple bams.
