@@ -1,7 +1,7 @@
 all: local_assembly/shiftSamPos \
 	mcutils/src/samToBed \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
-  lib/libhdf5_cpp.a \
+  hdf5/build/lib/libhdf5_cpp.a \
   hgsvg/blasr/alignment/bin/blasr \
   pbsamstream/pbsamstream \
   samtools/samtools
@@ -23,9 +23,9 @@ hdf5/hdf5-1.8.20/README.txt:
 
 hdf5/build/lib/libhdf5_cpp.a: hdf5/hdf5-1.8.20/README.txt
 	cd hdf5/hdf5-1.8.20 &&./configure --prefix=$(PWD)/hdf5/build --enable-cxx &&\
-    make -j 8 && make install
+	make -j 8 && make install
 
-hgsvg/blasr/alignment/bin/blasr:
+hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
 	cd hgsvg && make
 
 pbsamstream/pbsamstream:
