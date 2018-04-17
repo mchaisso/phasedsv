@@ -1,0 +1,22 @@
+
+Child:
+
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160623_chaisson_pacbio_aligns/20160525.HG00733.PacBio.BLASR/HG00733.PUR.chr22.BLASR.20160525.PacBio.10x-phased.bam
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160623_chaisson_pacbio_aligns/20160525.HG00733.PacBio.BLASR/HG00733.PUR.chr22.BLASR.20160525.PacBio.10x-phased.bam.bai
+
+
+Parents:
+
+Father:
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160623_chaisson_pacbio_aligns/20160525.HG00731.PacBio.BLASR/HG00731.PUR.chr22.BLASR.20160525.PacBio.10x-phased.bam
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160623_chaisson_pacbio_aligns/20160525.HG00731.PacBio.BLASR/HG00731.PUR.chr22.BLASR.20160525.PacBio.10x-phased.bam.bai
+Mother:
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160623_chaisson_pacbio_aligns/20160525.HG00732.PacBio.BLASR/HG007732.PUR.chr22.BLASR.20160525.PacBio.10x-phased.bam
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160623_chaisson_pacbio_aligns/20160525.HG00732.PacBio.BLASR/HG007732.PUR.chr22.BLASR.20160525.PacBio.10x-phased.bam.bai
+
+Phased SNVs:
+
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160704_whatshap_strandseq_10X_phased_SNPs/PUR/PR05.wgs.whatshap.strandseq-10X.20160704.phased-genotypes.vcf.gz
+
+http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/hgsv_sv_discovery/working/20160704_whatshap_strandseq_10X_phased_SNPs/PUR/PR05.wgs.whatshap.strandseq-10X.20160704.phased-genotypes.vcf.gz.tbi
+
