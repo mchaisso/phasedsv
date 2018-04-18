@@ -3,7 +3,7 @@
 usage()
 {
 cat << EOF
-		RunTrioTiledAssemblyOnRegions.sh regions paramfile [ --jobname jobname ] [--index idx ] [ --delay delay]
+		RunTrioTiledAssemblyOnRegions.sh regions paramfile [ -j jobname ] [-i idx ] [ -d delay]
 		-j job  Will submit jobs under this name to sge.
 		-i idx  The index of this job, 1... #jobs. When less than delay, sleep
 		               for a few seconds to avoid slamming a shared filesystem with 
