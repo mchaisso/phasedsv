@@ -31,5 +31,5 @@ hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
 pbsamstream/pbsamstream:
 	cd pbsamstream && make
 
-samtools/samtools:
-	cd samtools && make
+samtools/samtools: local_assembly/pbgreedyphase/partitionByPhasedSNVs
+	cd samtools && make CFLAGS=-I$(abspath local_assembly/pbgreedyphase/bzip2-1.0.6) LDFLAGS="-L$(abspath local_assembly/pbgreedyphase/bzip2-1.0.6) -lbz2"
