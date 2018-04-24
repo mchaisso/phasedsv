@@ -4,11 +4,11 @@
 	ignore = dirty
 [submodule "local_assembly/pbgreedyphase"]
 	path = local_assembly/pbgreedyphase
-	url = https://github.com/paudano/pbgreedyphase.git
+	url = https://github.com/mchaisso/pbgreedyphase.git
 	ignore = dirty
 [submodule "pbsamstream"]
 	path = pbsamstream
-	url = https://github.com/paudano/pbsamstream.git
+	url = https://github.com/mchaisso/pbsamstream.git
 	ignore = dirty
 [submodule "samtools"]
 	path = samtools
@@ -24,7 +24,7 @@
 	ignore = dirty
 [submodule "hgsvg"]
 	path = hgsvg
-	url = https://github.com/paudano/hgsvg.git
+	url = https://github.com/EichlerLab/hgsvg.git
 	ignore = dirty
 [submodule "vt"]
 	path = vt
