@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-BASE=$(dirname $0)
+BASE=$(readlink -f $(dirname $0))
 usage()
 {
 cat << EOF
