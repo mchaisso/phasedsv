@@ -30,29 +30,22 @@ reference the README.md in pbsamstream for the commands to generate
 correctly formatted bam files.
 
 2. Configuration.
-    2.1.  Setup python environment. It is easiest to ensure compatibility with python modules if virtual environments are used.  A utility script is provided to create and populate the virtualenv with the required python modules for running phasedsv.  You can create the module using `source setup_virtualenv.sh`
+    2.1.  Setup python environment. It is easiest to ensure compatibility with python modules if virtual environments are used.  A utility script is provided to create and populate the virtualenv with the required python modules for running phasedsv.  You can create the module using `source phasedsv/setup_virtualenv.sh`
 
-    2.2. `setup_phasedsv.sh` : configuration of the python environment,
+    2.2. `phasedsv/setup_phasedsv.sh` : configuration of the python environment,
   and the LD_LIBRARY_PATH or PATH to access samtools and bedtools.  A
   sample script is included.
 
-    2.3 `local_assembly/Configure.mak`:  This sets up variables
+    2.3 `phasedsv/local_assembly/Configure.mak`:  This sets up variables
   used in the make files that run local assemblies. They need to point
   to the reference (indexed by samtools faidx and blasr sawriter), and
   the canu installation. The value of "READ_SOURCE" should be set to
   "HGSVG_BAM" if running PacBio RSII alignments, and anything else (or
-  not set) otherwise. A template is located at `local_assembly/Configure.mak.template`.
+  not set) otherwise.
 
     2.4 BAM fofn: this should be a file of complete paths to the bam or
 	bams if the alignments are split into multiple bams.
 
-    2.4 Trio assembly.
-	   If you are running a trio assembly, you need to generate bed
-	   files that contain the regions which the parental reads may be
-	   unambiguously assigned.  The example below uses the phased vcf
-	   for the Puerto Rican family.
-
-`hgsvg/phasing/DetermineInheritance.py  --vcf bams/PR05.wgs.whatshap.strandseq-10X.20160704.phased-genotypes.vcf.gz --child HG00733 --fa HG00731 --mo HG00732 --faBed fa.bed --moBed mo.bed`
 
 
 3. Run local assemblies.
@@ -70,7 +63,16 @@ export VCF=/home/cmb-16/mjc/sample-datasets/giab/HG002/pacbio/10x/NA24385_GRCh38
 export SAMPLE=HG002
 ```
 
- 3.2 Define the regions that will be assembled. These can be copied from `hgsvg/regions/Windows.60kb-span.20kbp-stride.txt.  In general they are in the format chrom.start-end. 
+ 3.2 Define the regions that will be assembled. These can be copied from `hgsvg/regions/Windows.60kb-span.20kbp-stride.txt`.  In general they are in the format chrom.start-end. 
+
+ 3.3 Trio assembly.
+	   If you are running a trio assembly, you need to generate bed
+	   files that contain the regions which the parental reads may be
+	   unambiguously assigned.  The example below uses the phased vcf
+	   for the Puerto Rican family.
+
+`phasedsv/hgsvg/phasing/DetermineInheritance.py  --vcf bams/PR05.wgs.whatshap.strandseq-10X.20160704.phased-genotypes.vcf.gz --child HG00733 --fa HG00731 --mo HG00732 --faBed fa.bed --moBed mo.bed`
+
 
  3.3 Run local assemblies. This is a computationally intensive task, and is best ran on a cluster. For every line in the regions file, a local assembly must be generated. For single-sample assemblies, the command is RunTiledAssembly.sh
 
