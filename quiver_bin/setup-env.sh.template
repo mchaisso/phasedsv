@@ -1,3 +1,4 @@
-export LD_LIBRARY_PATH=/home/mchaisso/projects/phasedsv/quiver/lib:$LD_LIBRARY_PATH
-export PATH=/home/mchaisso/projects/phasedsv/quiver/bin:$PATH
+export PATH_TO_PHASEDSV=**FULL PATH TO PHASEDSV***
+export LD_LIBRARY_PATH=$PATH_TO_PHASEDSV/phasedsv/quiver/lib:$LD_LIBRARY_PATH
+export PATH=$PATH_TO_PHASEDSV/phasedsv/quiver/bin:$PATH
 
