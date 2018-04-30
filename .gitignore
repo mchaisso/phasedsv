@@ -1,3 +1,4 @@
 hdf5
 local_assembly/Configure.mak
 environments
+setup_phasedsv.sh
