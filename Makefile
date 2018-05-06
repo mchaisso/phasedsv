@@ -4,8 +4,16 @@ all: local_assembly/shiftSamPos \
   hdf5/build/lib/libhdf5_cpp.a \
   hgsvg/blasr/alignment/bin/blasr \
   pbsamstream/pbsamstream \
-  samtools/samtools
+  samtools/samtools \
+  environments/python2.7/bin/activate \
+  setup_phasedsv.sh
 
+/environments/python2.7/bin/activate:
+	source ./setup_virtualenv.sh
+
+setup_phasedsv.sh:
+	echo "#!/usr/bin/env bash" > $@
+	echo "source "$(PWD)"/environments/python2.7/bin/activate" >> $@
 
 local_assembly/shiftSamPos:
 	cd local_assembly && make

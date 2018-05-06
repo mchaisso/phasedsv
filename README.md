@@ -34,12 +34,11 @@ correctly formatted bam files.
     compatibility with python modules if virtual environments are
     used.  A utility script is provided to create and populate the
     virtualenv with the required python modules for running phasedsv.
-    You can create the module using `source setup_virtualenv.sh`	 
+    You can create the module using
+
+  ```source setup_virtualenv.sh```
 		
 
-    2.2. `setup_phasedsv.sh.template` : configuration of the python environment,
-  and the LD_LIBRARY_PATH or PATH to access samtools and bedtools.  A
-  sample script is included.
 
     2.3 `local_assembly/Configure.mak`:  This sets up variables
   used in the make files that run local assemblies. They need to point
