@@ -42,11 +42,11 @@ assembly.bam: assembly.fasta $(SAM)
 	samtools index assembly.bam
 
 assembly.bam.pbi: assembly.bam
-	source $(MAKE_DIR)/../quiver/setup-env.sh && $(MAKE_DIR)/../quiver/bin/pbindex assembly.bam
+	source $(MAKE_DIR)/../setup_phasedsv.sh && $(MAKE_DIR)/../quiver/bin/pbindex assembly.bam
 
 assembly.consensus.fasta: assembly.bam assembly.bam.pbi assembly.fasta
 	samtools faidx assembly.fasta
-	source $(MAKE_DIR)/../quiver/setup-env.sh && $(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
+	source $(MAKE_DIR)/../setup_phasedsv.sh && $(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
 	awk '{ if (substr($$1,0,1) == ">") {print $$1"/$(HAP)";} else { print;} }' $@ > $@.tmp
 	mv -f $@.tmp $@
 

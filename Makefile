@@ -3,6 +3,7 @@ all: local_assembly/shiftSamPos \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
   hdf5/build/lib/libhdf5_cpp.a \
   hgsvg/blasr/alignment/bin/blasr \
+  hgsvg/blasr/pbihdfutils/bin/samtobas \
   pbsamstream/pbsamstream \
   samtools/samtools \
   environments/python2.7/bin/activate \
@@ -14,6 +15,11 @@ all: local_assembly/shiftSamPos \
 setup_phasedsv.sh:
 	echo "#!/usr/bin/env bash" > $@
 	echo "source "$(PWD)"/environments/python2.7/bin/activate" >> $@
+	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/local_assembly/pbgreedyphase/boost_1_66_0/stage/lib/">> $@
+	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/quiver/lib/">> $@
+	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/hdf5/build/lib/">> $@
+	echo "export PYTHONPATH=\$$PYTHONPATH:"$(PWD)"/quiver/lib/python2.7/site-packages/">> $@
+	echo "export PATH=\$$PATH:"$(PWD)"/quiver/bin/" >> $@
 
 local_assembly/shiftSamPos:
 	cd local_assembly && make
@@ -34,6 +40,9 @@ hdf5/build/lib/libhdf5_cpp.a: hdf5/hdf5-1.8.20/README.txt
 	make -j 8 && make install
 
 hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
+	cd hgsvg && make  HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib
+
+hgsvg/blasr/pbihdfutils/bin/samtobas: hdf5/build/lib/libhdf5_cpp.a
 	cd hgsvg && make
 
 pbsamstream/pbsamstream:

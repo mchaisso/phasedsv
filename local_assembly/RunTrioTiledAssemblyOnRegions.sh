@@ -69,17 +69,17 @@ fi
 
 DIR=$TMPDIR/$USER/lasm/$$/
 echo "starting" $DIR
-mkdir -p samfiles
-mkdir -p assemblies
-mkdir -p records
 
 
 
 PARAMS=`cat $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
 
-echo "sourcing " $BASE/../config.sh
-source $BASE/../config.sh
+mkdir -p $DEST/samfiles
+mkdir -p $DEST/assemblies
+mkdir -p $DEST/records
+
+source $BASE/../setup_phasedsv.sh
 
 mkdir -p $DIR
 
@@ -115,12 +115,13 @@ ls $DIR/reads.region.ch.bam > $DIR/reads.region.ch.bam.fofn
 ls $DIR/reads.region.mo.bam > $DIR/reads.region.mo.bam.fofn
 ls $DIR/reads.region.fa.bam > $DIR/reads.region.fa.bam.fofn
 
+echo "Done configuring fofn"
 
 #
 # Set up param file for local files.
 #
 grep -v "BAMS=" $PARAMFILE > $DIR/params.txt
-
+grep "DEST" $PARAMFILE >> $DIR/params.txt
 echo "BAMS=$DIR/reads.region.ch.bam.fofn" >> $DIR/params.txt
 echo "MOBAMS=$DIR/reads.region.mo.bam.fofn" >> $DIR/params.txt
 echo "FABAMS=$DIR/reads.region.fa.bam.fofn" >> $DIR/params.txt

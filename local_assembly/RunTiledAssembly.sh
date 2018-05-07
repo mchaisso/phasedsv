@@ -16,16 +16,13 @@ TARGETREGION=`echo $1 | tr '.' ':'`
 echo $TARGETREGION
 
 
-mkdir -p samfiles
-mkdir -p assemblies
-mkdir -p records
-
 REGION=$1
 shift
 PARAMFILE=$1
 shift
 DIR="asm"
 ASSEMBLER=$BASE/RunPartitionedAssembly.mak
+echo "running RunTiledassembly.sh"
 while getopts “hj:a:d:” OPTION
 do
      case $OPTION in
@@ -50,18 +47,23 @@ do
 done
 
 
-PARAMS=`cat $PARAMFILE | tr "\n" " "`
+PARAMS=`grep -v "^#" $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
 
+mkdir -p $DEST/samfiles
+mkdir -p $DEST/assemblies
+mkdir -p $DEST/records
+
 mkdir -p $DIR/$REGION;
-cd $DIR/$REGION;
+p=$PWD
+pushd $DIR/$REGION;
 echo "RUNNING IN " $DIR/$REGION
 #
 #  Setup the environment
-
 #
+
 echo "setting up"
-source $BASE/../config.sh
+source $BASE/../setup_phasedsv.sh
 
 if [ -e $DEST/assemblies/$REGION.fasta ]; then
 	 echo $DEST/assemblies/$REGION.fasta
@@ -72,13 +74,12 @@ fi
 echo "running makefile"
 echo make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS
 make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS || true;
-mkdir -p $DEST/assemblies
-mkdir -p $DEST/samfiles
-mkdir -p $DEST/results
+
 echo "MOVING $DIR/$REGION/assembly.consensus.fasta $DEST/assemblies/$REGION.fasta"
-mv -f $DIR/$REGION/assembly.consensus.fasta $DEST/assemblies/$REGION.fasta
-mv -f $DIR/$REGION/assembly.consensus.fasta.sam $DEST/samfiles/$REGION.sam  
-mv -f $DIR/$REGION/records.txt $DEST/records/$REGION.txt
+popd
+mv -f $DIR/$REGION/assembly.consensus.fasta ./$DEST/assemblies/$REGION.fasta
+mv -f $DIR/$REGION/assembly.consensus.fasta.sam ./$DEST/samfiles/$REGION.sam  
+mv -f $DIR/$REGION/summary.txt $DEST/records/$REGION.txt
 
 
 exit 0

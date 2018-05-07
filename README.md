@@ -68,7 +68,8 @@ export VCF=/home/cmb-16/mjc/sample-datasets/giab/HG002/pacbio/10x/NA24385_GRCh38
 export SAMPLE=HG002
 ```
 
- 3.2 Define the regions that will be assembled. These can be copied from `hgsvg/regions/Windows.60kb-span.20kbp-stride.txt`.  In general they are in the format chrom.start-end. 
+ 3.2 Define the regions that will be assembled. These can be copied from `hgsvg/regions/Windows.60kb-span.20kbp-stride.txt`.  In general they are in the format chrom.start-end.
+
 
  3.3 Trio assembly.
 	   If you are running a trio assembly, you need to generate bed

@@ -6,7 +6,7 @@ shiftSamPos: ShiftSamFromRegion.cpp
 	g++ $< -o $@
 
 blasr/alignment/bin/blasr:
-	cd blasr && make HDF5INCLUDEDIR=$(MAKE_DIR)/../include  HDF5LIBDIR=$(MAKE_DIR)/../lib
+	cd blasr && make HDF5INCLUDEDIR=$(MAKE_DIR)/../hdf5/build/include  HDF5LIBDIR=$(MAKE_DIR)/../hdf5/build/lib
 
 mcutils/src/samToBed:
 	cd mcutils/src && make
