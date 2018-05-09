@@ -9,8 +9,8 @@ all: local_assembly/shiftSamPos \
   environments/python2.7/bin/activate \
   setup_phasedsv.sh
 
-/environments/python2.7/bin/activate:
-	source ./setup_virtualenv.sh
+environments/python2.7/bin/activate:
+	./setup_virtualenv.sh
 
 setup_phasedsv.sh:
 	echo "#!/usr/bin/env bash" > $@
