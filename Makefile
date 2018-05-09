@@ -20,6 +20,9 @@ setup_phasedsv.sh:
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/hdf5/build/lib/">> $@
 	echo "export PYTHONPATH=\$$PYTHONPATH:"$(PWD)"/quiver/lib/python2.7/site-packages/">> $@
 	echo "export PATH=\$$PATH:"$(PWD)"/quiver/bin/" >> $@
+	echo "#" >> $@
+	echo "# Add custom configuration here." >> $@
+	echo "#" >> $@
 
 local_assembly/shiftSamPos:
 	cd local_assembly && make

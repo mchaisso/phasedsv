@@ -16,8 +16,8 @@ EOF
 exit 1
 
 }
+BASE="$( cd "$(dirname "$0")" ; pwd -P )"
 
-BASE=$(dirname $0)
 
 if [ $# -lt 2 ]; then
 		usage
@@ -59,6 +59,7 @@ DODELAY=1
 JOBNAME=loc_asm
 
 ASSEMBLER=$BASE/RunTrioPartionedAssemblies.mak
+
 
 
 

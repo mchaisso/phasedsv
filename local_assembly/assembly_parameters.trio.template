@@ -1,0 +1,16 @@
+REF=/net/eichler/vol2/eee_shared/assemblies/GRCh38/no_unloc/GRCh38.fasta
+BAMS=/net/eichler/vol24/projects/structural_variation/nobackups/projects/HGSVG/phased-sv/test-run/child.fofn
+VCF=/net/eichler/vol24/projects/structural_variation/nobackups/projects/HGSVG/phased-sv/test-run/data/rgn1.vcf.gz
+SAMPLE=HG00733
+DEST=asm
+
+#
+# Parameters for pulling reads from parents.
+#
+FABAMS=/net/eichler/vol24/projects/structural_variation/nobackups/projects/HGSVG/phased-sv/test-run/fa.fofn
+MOBAMS=/net/eichler/vol24/projects/structural_variation/nobackups/projects/HGSVG/phased-sv/test-run/mo.fofn
+FA=HG00731
+MO=HG00732
+MO_INHERIT=mo.bed.gz
+FA_INHERIT=fa.bed.gz
+

@@ -1,0 +1,11 @@
+REF=/home/cmb-panasas2/mchaisso/genomes/hg38/hg38.fa
+BAMS=/home/cmb-panasas2/mchaisso/giab/bams.fofn
+VCF=/home/cmb-16/mjc/sample-datasets/giab/HG002/pacbio/10x/NA24385_GRCh38.het.vcf.gz
+SAMPLE=HG00733
+#
+# Parameters for pulling reads from parents.
+#
+FABAMS
+FA=HG00731
+MO=HG00732
+

@@ -55,18 +55,18 @@ correctly formatted bam files.
 
 3. Run local assemblies.
 
-  3.1 Create a parameter file describing the source data for the file. This requires the following values
-. The full path to the reference reads are aligned to.
-. The path to the bam file of file names. This is one line per bam, with the full path to the file.
-. The VCF file that has the phased SNVs. 
-. The name of the sample that is being assembled (the sample ID in the VCF file). 
+  3.1 Create a parameter file describing the source data for the
+	file. This requires the following values:
+	
+     . The full path to the reference reads are aligned to. 
+		 . The path to the bam file of file names. This is one line per
+	     bam, with the full path to the file. 
+     . The VCF file that has the phased SNVs. 
+     . The name of the sample that is being assembled (the sample ID
+	     in the VCF file).
 
-```
-export REF=/home/cmb-panasas2/mchaisso/genomes/hg38/hg38.fa
-export BAMS=/home/cmb-panasas2/mchaisso/giab/bams.fofn
-export VCF=/home/cmb-16/mjc/sample-datasets/giab/HG002/pacbio/10x/NA24385_GRCh38.het.vcf.gz
-export SAMPLE=HG002
-```
+  An example file is given in assembly_parameters.template
+
 
  3.2 Define the regions that will be assembled. These can be copied from `hgsvg/regions/Windows.60kb-span.20kbp-stride.txt`.  In general they are in the format chrom.start-end.
 
@@ -77,7 +77,7 @@ export SAMPLE=HG002
 	   unambiguously assigned.  The example below uses the phased vcf
 	   for the Puerto Rican family.
 
-`hgsvg/phasing/DetermineInheritance.py  --vcf bams/PR05.wgs.whatshap.strandseq-10X.20160704.phased-genotypes.vcf.gz --child HG00733 --fa HG00731 --mo HG00732 --faBed fa.bed --moBed mo.bed`
+`hgsvg/phasing/DetermineInheritance.py  --vcf data/rgn1.vcf.gz --child HG00733 --fa HG00731 --mo HG00732 --faBed fa.bed --moBed mo.bed`
 
 
  3.3 Run local assemblies. This is a computationally intensive task, and is best ran on a cluster. For every line in the regions file, a local assembly must be generated. For single-sample assemblies, the command is RunTiledAssembly.sh

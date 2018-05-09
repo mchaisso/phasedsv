@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-BASE=$(readlink -f $(dirname $0))
+BASE="$( cd "$(dirname "$0")" ; pwd -P )"
+
 usage()
 {
 cat << EOF
@@ -12,17 +13,15 @@ exit 1
 
 }
 
-TARGETREGION=`echo $1 | tr '.' ':'`
-echo $TARGETREGION
-
 
 REGION=$1
+
 shift
 PARAMFILE=$1
 shift
 DIR="asm"
 ASSEMBLER=$BASE/RunPartitionedAssembly.mak
-echo "running RunTiledassembly.sh"
+
 while getopts “hj:a:d:” OPTION
 do
      case $OPTION in
@@ -45,6 +44,10 @@ do
              ;;
      esac
 done
+
+
+TARGETREGION=`echo $REGION | tr '.' ':'`
+echo "target region " $TARGETREGION
 
 
 PARAMS=`grep -v "^#" $PARAMFILE | tr "\n" " "`
