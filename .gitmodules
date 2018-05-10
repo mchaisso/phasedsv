@@ -34,6 +34,3 @@
 	path = local_assembly/blasr
 	url = https://github.com/mchaisso/blasr.git
 	ignore = dirty
-[submodule "hdf5"]
-	path = hdf5
-	url = https://github.com/live-clones/hdf5.git
