@@ -14,4 +14,13 @@ These should all be accessible in your path.
 modules will be downloaded. 
 
 3. Prepare quiver.
-  You can 
+   An executable for quiver must exist in quiver/bin/quver. You can
+   build this by cloning pacbio's pitchfork, and building
+   GenomicConsensus, and setting up the directory structure, but this
+   is often a difficult task.  A binary distribution of quiver is
+   included, though it may not work on all systems. To try out the
+   binary installation, link quiver_bin into quiver `ln -s quiver_bin
+   quiver`, and then source setup_phasedsv.sh. Next, try typing
+   `quiver` to see if paths are correctly configured, and there are no
+   conflicts with versions of python, etc.
+
