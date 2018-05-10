@@ -1,6 +1,7 @@
 all: local_assembly/shiftSamPos \
 	mcutils/src/samToBed \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
+  local_assembly/blasr/alignment/bin/blasr \
   hdf5/build/lib/libhdf5_cpp.a \
   hgsvg/blasr/alignment/bin/blasr \
   hgsvg/blasr/pbihdfutils/bin/samtobas \
@@ -31,16 +32,20 @@ mcutils/src/samToBed:
 	cd mcutils/src && make -j 8
 
 local_assembly/pbgreedyphase/partitionByPhasedSNVs:
-	cd local_assembly/pbgreedyphase && make
+	cd local_assembly && make
 
-hdf5/hdf5-1.8.20/README.txt:
-	mkdir -p hdf5
-	cd hdf5 && wget https://support.hdfgroup.org/ftp/HDF5/current18/src/hdf5-1.8.20.tar.gz
-	cd hdf5 && tar xvf hdf5-1.8.20.tar.gz
+local_assembly/blasr/alignment/bin/blasr:
+	cd local_assembly && make
 
-hdf5/build/lib/libhdf5_cpp.a: hdf5/hdf5-1.8.20/README.txt
-	cd hdf5/hdf5-1.8.20 &&./configure --prefix=$(PWD)/hdf5/build --enable-cxx &&\
-	make -j 8 && make install
+
+hdf5/build/lib/libhdf5_cpp.a:
+	mkdir -p $(PWD)/hdf5/build
+	cd hdf5/ && \
+  mkdir cmake_build && \
+  cd cmake_build && \
+  cmake ..  -DHDF5_BUILD_CPP_LIB:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build/ && \
+  make -j 8 && \
+  make install
 
 hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
 	cd hgsvg && make  HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib
