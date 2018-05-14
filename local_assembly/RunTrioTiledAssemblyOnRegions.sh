@@ -16,6 +16,12 @@ EOF
 exit 1
 
 }
+if [ -z $TMPDIR  ]; then
+		echo "ERROR. TMPDIR must be set, and should be a full path from /."
+		echo "The assembly pipeline will execut as a subdirectory of  \$TMPDIR."
+		exit 1
+fi
+
 BASE="$( cd "$(dirname "$0")" ; pwd -P )"
 
 
@@ -75,12 +81,11 @@ echo "starting" $DIR
 
 PARAMS=`cat $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
+source $BASE/../setup_phasedsv.sh
 
 mkdir -p $DEST/samfiles
 mkdir -p $DEST/assemblies
 mkdir -p $DEST/records
-
-source $BASE/../setup_phasedsv.sh
 
 mkdir -p $DIR
 

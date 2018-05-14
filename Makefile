@@ -34,7 +34,7 @@ mcutils/src/samToBed:
 local_assembly/pbgreedyphase/partitionByPhasedSNVs:
 	cd local_assembly && make
 
-local_assembly/blasr/alignment/bin/blasr:
+local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
 	cd local_assembly && make
 
 
@@ -43,7 +43,7 @@ hdf5/build/lib/libhdf5_cpp.a:
 	cd hdf5/ && \
   mkdir cmake_build && \
   cd cmake_build && \
-  cmake ..  -DHDF5_BUILD_CPP_LIB:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=ON -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build/ && \
+  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++`  -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build/ && \
   make -j 8 && \
   make install
 

@@ -25,28 +25,18 @@ assembly.fasta: reads.fasta
 	if [ -s assembly/asm.contigs.fasta ]; then \
     cp assembly/asm.contigs.fasta $@; \
   fi
-#	if [ ! -s assembly/asm.contigs.fasta ]; then \
-#		ls reads.fasta  > input.fofn; \
-#		source $(HOME)/scripts/setup_falcon.sh && fc_run.py $(HOME)/projects/PacBioSequencing/scripts/local_assembly/falcon/fc_run.local.cfg; cp 2-asm-falcon/p_ctg.fa $@;   \
-#	else \
-#	   cp assembly/asm.contigs.fasta $@; \
-#        fi ;
-#	echo "Number of reads " > report.txt
-#	grep -c ">" reads.fasta >> report.txt
-#	echo "Assembly number of contigs" >> report.txt
-#	module load numpy/latest; ~mchaisso/software/mcsrc/UTILS/pcl reads.fasta | ~/scripts/stats.py >> report.txt
-#	-rm -rf templocal
 
 assembly.bam: assembly.fasta $(SAM)
 	export READ_SOURCE=$(READ_SOURCE) && $(MAKE_DIR)/MakeBamVersionWrapper.sh $(SAM)
 	samtools index assembly.bam
 
 assembly.bam.pbi: assembly.bam
-	source $(MAKE_DIR)/../setup_phasedsv.sh && $(MAKE_DIR)/../quiver/bin/pbindex assembly.bam
+	$(MAKE_DIR)/../quiver/bin/pbindex assembly.bam
 
 assembly.consensus.fasta: assembly.bam assembly.bam.pbi assembly.fasta
 	samtools faidx assembly.fasta
-	source $(MAKE_DIR)/../setup_phasedsv.sh && $(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
+	echo $(PYTHONPATH)
+	$(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
 	awk '{ if (substr($$1,0,1) == ">") {print $$1"/$(HAP)";} else { print;} }' $@ > $@.tmp
 	mv -f $@.tmp $@
 

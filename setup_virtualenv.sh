@@ -1,10 +1,10 @@
 virtualenv environments/python2.7
 source environments/python2.7/bin/activate
 p=`which python`
-$p -m pip install --upgrade pip
-$p -m pip install pandas
-$p -m pip install numpy
-$p -m pip install pysam
-$p -m pip install networkx
-$p -m pip install intervaltree
-$p -m pip install biopython
+$p -m pip install --no-cache-dir  --upgrade pip
+$p -m pip install --no-cache-dir pandas
+$p -m pip install --no-cache-dir numpy
+$p -m pip install --no-cache-dir pysam
+$p -m pip install --no-cache-dir networkx
+$p -m pip install --no-cache-dir intervaltree
+$p -m pip install --no-cache-dir biopython
