@@ -1,7 +1,7 @@
 Installing Phased-SV.
 
 1. Requirements:
-
+  python >= 2.7.10 
   gcc >= 4.9.0
   CMAKE >= 1.6
 	ninja >= 1.8
