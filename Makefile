@@ -40,18 +40,19 @@ local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
 
 hdf5/build/lib/libhdf5_cpp.a:
 	mkdir -p $(PWD)/hdf5/build
+	export CXXFLAGS="-std=c++11"
 	cd hdf5/ && \
   mkdir cmake_build && \
   cd cmake_build && \
   CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++`  -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
-  make -j 8 && \
+  make -j 8 VERBOSE=1 && \
   make install
 
 hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
-	cd hgsvg && make  HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib
+	cd hgsvg && make  HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib -j 8
 
 hgsvg/blasr/pbihdfutils/bin/samtobas: hdf5/build/lib/libhdf5_cpp.a
-	cd hgsvg && make
+	cd hgsvg && make -j 8 HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib 
 
 pbsamstream/pbsamstream:
 	cd pbsamstream && make
