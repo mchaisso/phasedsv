@@ -31,7 +31,7 @@ local_assembly/shiftSamPos:
 mcutils/src/samToBed:
 	cd mcutils/src && make -j 8
 
-local_assembly/pbgreedyphase/partitionByPhasedSNVs:
+local_assembly/pbgreedyphase/partitionByPhasedSNVs: hdf5/build/lib/libhdf5_cpp.a
 	cd local_assembly && make
 
 local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
