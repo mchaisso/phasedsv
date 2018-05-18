@@ -45,7 +45,7 @@ hdf5/build/lib/libhdf5_cpp.a:
 	cd hdf5/ && \
   mkdir cmake_build && \
   cd cmake_build && \
-  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++`  -DHDF5_BUILD_CPP_LIB:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_ENCODING:BOOL=OFF   -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
+  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++`  -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
   make -j 8 VERBOSE=1 && \
   make install
 
