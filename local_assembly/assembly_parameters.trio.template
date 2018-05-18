@@ -1,6 +1,6 @@
-REF=/home/cmb-16/mjc/shared/references/hg38/hg38.fa
+REF=/home/cmb-16/mjc/shared/references/hg38/indexes/blasr/hg38.fa
 BAMS=/home/cmb-16/mjc/projects/phased-sv/test_run/ch.fofn
-VCF=/home/cmb-16/mjc/projects/phased-sv/test_run/data/rgn1.vcf.gz
+VCF=/home/cmb-16/mjc/projects/phased-sv/test_run/PhasedSVTestData/rgn1.vcf.gz
 SAMPLE=HG00733
 DEST=asm
 
