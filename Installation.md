@@ -1,7 +1,6 @@
 Installing Phased-SV.
 
 1. Requirements:
-
   gcc >= 7.0
   CMAKE >= 1.10
 	ninja >= 1.8

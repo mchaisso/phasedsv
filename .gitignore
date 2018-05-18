@@ -2,3 +2,4 @@ local_assembly/Configure.mak
 environments
 setup_phasedsv.sh
 quiver
+quiver_bin/**/*.pyc
