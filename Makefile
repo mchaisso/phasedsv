@@ -25,7 +25,7 @@ setup_phasedsv.sh:
 	echo "# Add custom configuration here." >> $@
 	echo "#" >> $@
 
-local_assembly/shiftSamPos:
+local_assembly/shiftSamPos: hdf5/build/lib/libhdf5_cpp.a
 	cd local_assembly && make
 
 mcutils/src/samToBed:
