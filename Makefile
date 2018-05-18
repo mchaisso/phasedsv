@@ -39,6 +39,7 @@ local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
 
 
 hdf5/build/lib/libhdf5_cpp.a:
+	rm -rf $(PWD)/hdf5/cmake_build
 	mkdir -p $(PWD)/hdf5/build
 	export CXXFLAGS="-std=c++11"
 	cd hdf5/ && \
