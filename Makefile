@@ -2,7 +2,7 @@ all: local_assembly/shiftSamPos \
 	mcutils/src/samToBed \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
   local_assembly/blasr/alignment/bin/blasr \
-  hdf5/build/lib/libhdf5_cpp.a \
+  hdf5/build/lib/libhdf5_cpp.so \
   hgsvg/blasr/alignment/bin/blasr \
   hgsvg/blasr/pbihdfutils/bin/samtobas \
   pbsamstream/pbsamstream \
@@ -21,38 +21,43 @@ setup_phasedsv.sh:
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/hdf5/build/lib/">> $@
 	echo "export PYTHONPATH=\$$PYTHONPATH:"$(PWD)"/quiver/lib/python2.7/site-packages/">> $@
 	echo "export PATH=\$$PATH:"$(PWD)"/quiver/bin/" >> $@
+	echo "export PATH=\$$PATH:"$(PWD)"/bin/" >> $@	
 	echo "#" >> $@
 	echo "# Add custom configuration here." >> $@
 	echo "#" >> $@
 
-local_assembly/shiftSamPos: hdf5/build/lib/libhdf5_cpp.a
+bin/vt:
+	mkdir -p bin
+	cd vt && make -j 8; cp vt ../bin
+
+local_assembly/shiftSamPos: hdf5/build/lib/libhdf5_cpp.so
 	cd local_assembly && make
 
 mcutils/src/samToBed:
 	cd mcutils/src && make -j 8
 
-local_assembly/pbgreedyphase/partitionByPhasedSNVs: hdf5/build/lib/libhdf5_cpp.a
+local_assembly/pbgreedyphase/partitionByPhasedSNVs: hdf5/build/lib/libhdf5_cpp.so
 	cd local_assembly && make
 
-local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
+local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.so
 	cd local_assembly && make
 
 
-hdf5/build/lib/libhdf5_cpp.a:
+hdf5/build/lib/libhdf5_cpp.so:
 	rm -rf $(PWD)/hdf5/cmake_build
 	mkdir -p $(PWD)/hdf5/build
 	export CXXFLAGS="-std=c++11"
 	cd hdf5/ && \
   mkdir cmake_build && \
   cd cmake_build && \
-  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++`  -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
+  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++` -DBUILD_SHARED_LIBS:BOOL=ON -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
   make -j 8 VERBOSE=1 && \
   make install
 
-hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.a
+hgsvg/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.so
 	cd hgsvg && make  HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib -j 8
 
-hgsvg/blasr/pbihdfutils/bin/samtobas: hdf5/build/lib/libhdf5_cpp.a
+hgsvg/blasr/pbihdfutils/bin/samtobas: hdf5/build/lib/libhdf5_cpp.so
 	cd hgsvg && make -j 8 HDF5INCLUDEDIR=$(PWD)/hdf5/build/include HDF5LIBDIR=$(PWD)/hdf5/build/lib 
 
 pbsamstream/pbsamstream:
