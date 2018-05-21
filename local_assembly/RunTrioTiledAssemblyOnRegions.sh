@@ -82,6 +82,7 @@ echo "starting" $DIR
 PARAMS=`cat $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
 source $BASE/../setup_phasedsv.sh
+echo $LD_LIBRARY_PATH
 
 mkdir -p $DEST/samfiles
 mkdir -p $DEST/assemblies

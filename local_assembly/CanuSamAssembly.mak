@@ -36,7 +36,7 @@ assembly.bam.pbi: assembly.bam
 assembly.consensus.fasta: assembly.bam assembly.bam.pbi assembly.fasta
 	samtools faidx assembly.fasta
 	echo $(PYTHONPATH)
-	$(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
+	export LD_LIBRARY_PATH=$(MAKE_DIR)/../quiver/lib:$(MAKE_DIR)/../quiver/lib64 && 	$(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@ 
 	awk '{ if (substr($$1,0,1) == ">") {print $$1"/$(HAP)";} else { print;} }' $@ > $@.tmp
 	mv -f $@.tmp $@
 
