@@ -2,6 +2,7 @@
 import sys
 import argparse
 import os
+import math
 
 ap=argparse.ArgumentParser(description="Prepare submission scripts for sge, uge, or slurm cluster management systems.")
 
@@ -19,7 +20,7 @@ args=ap.parse_args()
 
 regionsFile = open(args.regions)
 numRegions = len(regionsFile.readlines())
-assemblyScript=swd+"/../AssembleRegion.sh"
+assemblyScript=swd+"/../AssembleRegions.sh"
 if args.runTrio:
     assemblyScript=swd+"/../RunTrioTiledAssemblyOnRegions.sh"
 
@@ -42,3 +43,34 @@ if args.grid == "slurm":
     print "the submission script for custom array parameters at your site."
     
 
+if args.grid == "sge":
+    maxJobsPerFile=7
+    nFiles = int(math.ceil(numRegions/maxJobsPerFile))
+    startJob=1
+    allJobs=[]
+    for i in range(0,nFiles):
+        gridFileName=args.base + "." + str(i) + ".run.sh"
+        gf=open(gridFileName,'w')
+        gf.write("#!/usr/bin/env bash\n")
+        endJob=min(nFiles, startJob+maxJobsPerFile)
+        gf.write("#$ -t {}-{} -tc {} -S /bin/bash -V  -e /dev/null -o /dev/null -l mfree=3G -l h_rt=01:00:00 -pe serial 1\n".format(startJob, endJob, args.conc))
+        gf.write(assemblyScript +" `awk \"NR == $SGE_TASK_ID\" " + args.regions + " ` " + args.params + "\n")
+        startJob+=maxJobsPerFile
+        gf.close()
+        allJobs.append(gridFileName)
+    
+    submit=args.base+".submit.sh"
+    sf=open(submit,'w')
+    sf.write("#!/usr/bin/env bash\n")
+    for i in range(0,len(allJobs)):
+        if i > 0:
+            hold = " -hold_jid $h{} ".format(i-1)
+        else:
+            hold = ""
+        sf.write("output=`qsub {} {}`\n".format(hold, allJobs[i]))
+        sf.write("h{}=`echo $output | tr \" \" \"\\n\"  | grep -A 1 job | tail -1 | tr \".\" \"\t\" | cut -f 1`\n".format(i))
+    sf.close()
+        
+    print("\nCreated job script(s) '" + ",".join(allJobs) + "'")
+    print("Created submission script '" + submit+ "'.  You may need to modify")
+    print("the submission script for custom array parameters at your site.")
