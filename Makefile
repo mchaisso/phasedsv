@@ -24,9 +24,10 @@ quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
 	mkdir -p quiver/lib/python2.7/site-packages/
 	cd pbcommand && python setup.py build && python setup.py install  --prefix=$(PWD)/quiver/lib/
 
-quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg
+quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg environments/python2.7/bin/activate:
 	mkdir -p quiver/lib/python2.7/site-packages/
-	cd GenomicConsensus && python setup.py build && python setup.py install --prefix=$(PWD)/quiver/lib/
+  source $(PWD)/environments/python2.7/bin/activate && \
+    cd GenomicConsensus && python setup.py build && python setup.py install --prefix=$(PWD)/quiver/lib/
 
 pbsamstream/pbbam/build/bin/pbindex:
 	cd pbsamstream && make
