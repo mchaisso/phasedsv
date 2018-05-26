@@ -14,26 +14,34 @@ all: local_assembly/shiftSamPos \
 environments/python2.7/bin/activate:
 	./setup_virtualenv.sh
 
-quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py: local_assembly/pbgreedyphase/boost_1_66_0/stage/lib/libboost_program_options.a
+quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py: local_assembly/pbgreedyphase/boost_1_66_0/stage/lib/libboost_program_options.a environments/python2.7/bin/activate
 	mkdir -p quiver/lib/python2.7/site-packages/
-	cd GenomicConsensus && \
-  python setup.py build --boost=$(PWD)/../local_assembly/pbgreedyphase/boost_1_66_0 && \
-  python setup.py install --prefix=$(PWD)/quiver/lib/
+	source ./environments/python2.7/bin/activate && \
+  cd ConsensusCore && \
+  python setup.py build --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0 && \
+  export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
+  python setup.py install --prefix=$(PWD)/quiver/
 
 quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
 	mkdir -p quiver/lib/python2.7/site-packages/
-	cd pbcommand && python setup.py build && python setup.py install  --prefix=$(PWD)/quiver/lib/
+	cd pbcommand && python setup.py build && \
+    export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
+    python setup.py install  --prefix=$(PWD)/quiver/
 
 quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg environments/python2.7/bin/activate
 	mkdir -p quiver/lib/python2.7/site-packages/
-  source $(PWD)/environments/python2.7/bin/activate && \
-    cd GenomicConsensus && python setup.py build && python setup.py install --prefix=$(PWD)/quiver/lib/
+	source $(PWD)/environments/python2.7/bin/activate && \
+    cd GenomicConsensus && \
+    python setup.py build && \
+    export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
+    python setup.py install --prefix=$(PWD)/quiver/
 
 pbsamstream/pbbam/build/bin/pbindex:
 	cd pbsamstream && make
 
 quiver/bin/pbindex: pbsamstream/pbbam/build/bin/pbindex
-	cp $^ $@
+	mkdir -p quiver/bin
+	cp $< $@
 
 quiver/bin/variantCaller.new: quiver/bin/quiver quiver/bin/pbindex
 	echo "#!/usr/bin/env python" > quiver/bin/variantCaller.new
