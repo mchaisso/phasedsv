@@ -28,8 +28,8 @@ MODLIBS=        $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	2.7
 srcdir=		.
 
-abs_srcdir=	/panfs/cmb-panasas2/mchaisso/distros/pitchfork/workspace/Python-2.7.10
-abs_builddir=	/panfs/cmb-panasas2/mchaisso/distros/pitchfork/workspace/Python-2.7.10
+abs_srcdir=	/panfs/cmb-panasas2/mchaisso/pitchfork/workspace/Python-2.7.10
+abs_builddir=	/panfs/cmb-panasas2/mchaisso/pitchfork/workspace/Python-2.7.10
 build=		x86_64-unknown-linux-gnu
 host=		x86_64-unknown-linux-gnu
 
@@ -69,12 +69,12 @@ MAKESETUP=      $(srcdir)/Modules/makesetup
 # Compiler options
 OPT=		-DNDEBUG -g -fwrapv -O3 -Wall -Wstrict-prototypes
 BASECFLAGS=	 -fno-strict-aliasing
-CFLAGS=		$(BASECFLAGS)  -fPIC -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include -D_GNU_SOURCE -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include/ncurses $(OPT) $(EXTRA_CFLAGS)
+CFLAGS=		$(BASECFLAGS)  -fPIC -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_GNU_SOURCE -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include/ncurses $(OPT) $(EXTRA_CFLAGS)
 # Both CPPFLAGS and LDFLAGS need to contain the shell's value for setup.py to
 # be able to build extension modules using the directories specified in the
 # environment variables
 CPPFLAGS=	-I. -IInclude -I$(srcdir)/Include 
-LDFLAGS=	-L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib -Wl,-rpath,'$$ORIGIN/../lib'
+LDFLAGS=	-L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib -Wl,-rpath,'$$ORIGIN/../lib'
 LDLAST=		
 SGI_ABI=	
 CCSHARED=	-fPIC
@@ -93,7 +93,7 @@ MACHDEP=	linux2
 MULTIARCH=	
 
 # Install prefix for architecture-independent files
-prefix=		/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment
+prefix=		/panfs/cmb-panasas2/mchaisso/pitchfork/deployment
 
 # Install prefix for architecture-dependent files
 exec_prefix=	${prefix}
@@ -143,7 +143,7 @@ MACOSX_DEPLOYMENT_TARGET=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       LD_LIBRARY_PATH=/panfs/cmb-panasas2/mchaisso/distros/pitchfork/workspace/Python-2.7.10:/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib:/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib:/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib:/home/rcf-40/mchaisso/software/lib:/home/cmb-16/mjc/shared/hdf5.1.8.20/lib:/home/cmb-16/mjc/mchaisso/projects/phasedsv/pbsamstream/libs
+RUNSHARED=       LD_LIBRARY_PATH=/panfs/cmb-panasas2/mchaisso/pitchfork/workspace/Python-2.7.10:/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib:/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib:/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib:/usr/usc/R/3.4.0/lib64/R/lib:/home/cmb-16/mjc/shared/lib
 
 # ensurepip options
 ENSUREPIP=      no
@@ -155,7 +155,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--prefix=/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment' '--enable-unicode=ucs4' '--enable-shared' 'CC=gcc' 'CFLAGS= -fPIC -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include -D_GNU_SOURCE -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include/ncurses' 'LDFLAGS=-L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib -Wl,-rpath,'\''$$ORIGIN/../lib'\''' 'PKG_CONFIG_PATH=/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib/pkgconfig'
+CONFIG_ARGS=	 '--prefix=/panfs/cmb-panasas2/mchaisso/pitchfork/deployment' '--enable-unicode=ucs4' '--enable-shared' 'CC=gcc' 'CFLAGS= -fPIC -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_GNU_SOURCE -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include/ncurses' 'LDFLAGS=-L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib -Wl,-rpath,'\''$$ORIGIN/../lib'\''' 'PKG_CONFIG_PATH=/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib/pkgconfig'
 
 
 # Subdirectories with code
@@ -212,7 +212,7 @@ PROFILE_TASK=	$(srcdir)/Tools/pybench/pybench.py -n 2 --with-gc --with-syscheck
 
 LOCALMODLIBS=            -L$(SSL)/lib -lssl -lcrypto 
 BASEMODLIBS=
-SSL=/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment
+SSL=/panfs/cmb-panasas2/mchaisso/pitchfork/deployment
 GLHACK=-Dclear=__GLclear
 PYTHONPATH=$(COREPYTHONPATH)
 COREPYTHONPATH=$(DESTPATH)$(SITEPATH)$(TESTPATH)$(MACHDEPPATH)$(EXTRAMACHDEPPATH)$(TKPATH)$(OLDPATH)

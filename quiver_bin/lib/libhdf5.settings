@@ -3,33 +3,33 @@
 
 General Information:
 -------------------
-		   HDF5 Version: 1.8.16
-		  Configured on: Sat Dec  9 19:54:11 PST 2017
-		  Configured by: mchaisso@hpc-cmb
+		   HDF5 Version: 1.8.12
+		  Configured on: Fri May 25 15:07:31 PDT 2018
+		  Configured by: mchaisso@hpc-rigoletto
 		 Configure mode: production
 		    Host system: x86_64-unknown-linux-gnu
-	      Uname information: Linux hpc-cmb 3.10.0-514.26.2.el7.x86_64 #1 SMP Tue Jul 4 15:04:05 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+	      Uname information: Linux hpc-rigoletto 3.10.0-693.17.1.el7.x86_64 #1 SMP Thu Jan 25 20:13:58 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 		       Byte sex: little-endian
 		      Libraries: static, shared
-	     Installation point: /panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/hdf5-1.8.16
+	     Installation point: /panfs/cmb-panasas2/mchaisso/pitchfork/staging/hdf5-1.8.12
 
 Compiling Options:
 ------------------
                Compilation Mode: production
                      C Compiler: /home/cmb-16/mjc/shared/bin/gcc ( gcc (GCC) 7.2.0)
-                         CFLAGS:  -fPIC -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include -D_GNU_SOURCE
-                      H5_CFLAGS:   -std=c99 -pedantic -Wall -W -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -O -finline-functions
+                         CFLAGS:  -fPIC -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_GNU_SOURCE
+                      H5_CFLAGS:   -ansi -pedantic -Wall -W -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Waggregate-return -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -O -fomit-frame-pointer -finline-functions
                       AM_CFLAGS: 
                        CPPFLAGS: 
-                    H5_CPPFLAGS: -D_GNU_SOURCE -D_POSIX_C_SOURCE=200112L   -DNDEBUG -UH5_DEBUG_API
-                    AM_CPPFLAGS: -D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE  -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include
+                    H5_CPPFLAGS: -D_POSIX_C_SOURCE=199506L   -DNDEBUG -UH5_DEBUG_API
+                    AM_CPPFLAGS: -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_BSD_SOURCE 
                Shared C Library: yes
                Static C Library: yes
   Statically Linked Executables: no
-                        LDFLAGS:  -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib64 -static-libstdc++ -Wl,-rpath,'$$ORIGIN/../lib'
+                        LDFLAGS:  -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib64 -static-libstdc++ -Wl,-rpath,'$$ORIGIN/../lib'
                      H5_LDFLAGS: 
-                     AM_LDFLAGS:  -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib
- 	 	Extra libraries: -lz -ldl -lm 
+                     AM_LDFLAGS:  -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib
+ 	 	Extra libraries:  -lz -ldl -lm 
  		       Archiver: ar
  		 	 Ranlib: ranlib
  	      Debugged Packages: 
@@ -41,7 +41,7 @@ Languages:
 
                             C++: yes
                    C++ Compiler: /home/cmb-16/mjc/shared/bin/g++ ( g++ (GCC) 7.2.0)
-                      C++ Flags:  -fPIC -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include -D_GNU_SOURCE  -fPIC -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include -D_GNU_SOURCE  -fPIC -I/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/include -D_GNU_SOURCE
+                      C++ Flags:  -fPIC -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_GNU_SOURCE  -fPIC -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_GNU_SOURCE  -fPIC -I/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/include -D_GNU_SOURCE
                    H5 C++ Flags:  
                    AM C++ Flags: 
              Shared C++ Library: yes
@@ -55,11 +55,14 @@ Features:
             Default API Mapping: v18
  With Deprecated Public Symbols: yes
          I/O filters (external): deflate(zlib)
+         I/O filters (internal): shuffle,fletcher32,nbit,scaleoffset
                             MPE: no
-                     Direct VFD: no
+                     Direct VFD: yes
                         dmalloc: no
 Clear file buffers before write: yes
            Using memory checker: no
          Function Stack Tracing: no
+                           GPFS: no
       Strict File Format Checks: no
    Optimization Instrumentation: no
+       Large File Support (LFS): yes

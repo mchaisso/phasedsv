@@ -17,7 +17,7 @@ old_library='libssl.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib64 /panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/libressl-2.5.5/lib/libcrypto.la -lresolv'
+dependency_libs=' -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib64 /panfs/cmb-panasas2/mchaisso/pitchfork/staging/libressl-2.5.5/lib/libcrypto.la -lresolv'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/libressl-2.5.5/lib'
+libdir='/panfs/cmb-panasas2/mchaisso/pitchfork/staging/libressl-2.5.5/lib'

@@ -5,10 +5,10 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='libhdf5.so.10'
+dlname='libhdf5.so.8'
 
 # Names of this library.
-library_names='libhdf5.so.10.1.0 libhdf5.so.10 libhdf5.so'
+library_names='libhdf5.so.8.0.1 libhdf5.so.8 libhdf5.so'
 
 # The name of the static archive.
 old_library='libhdf5.a'
@@ -17,15 +17,15 @@ old_library='libhdf5.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib64 -lz -ldl -lm'
+dependency_libs=' -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib64 -lz -ldl -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
 
 # Version information for libhdf5.
-current=11
-age=1
-revision=0
+current=8
+age=0
+revision=1
 
 # Is this an already installed library?
 installed=yes
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/hdf5-1.8.16/lib'
+libdir='/panfs/cmb-panasas2/mchaisso/pitchfork/staging/hdf5-1.8.12/lib'

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/net/eichler/vol24/projects/structural_variation/nobackups/projects/HGSVG/phased-sv/build.4/phasedsv/quiver_bin/bin/python2.7
 import sys
 from GenomicConsensus.main import main
 if __name__ == '__main__':

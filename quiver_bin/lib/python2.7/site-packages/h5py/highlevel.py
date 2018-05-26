@@ -7,12 +7,23 @@
 # License:  Standard 3-clause BSD; see "license.txt" for full license terms
 #           and contributor agreement.
 
-from _hl import filters
-from _hl.base import is_hdf5, HLObject
-from _hl.files import File
-from _hl.group import Group, SoftLink, ExternalLink, HardLink
-from _hl.dataset import Dataset
-from _hl.datatype import Datatype
-from _hl.attrs import AttributeManager
+# pylint: disable=unused-import
+
+"""
+    This is the deprecated legacy high-level interface.
+    
+    Everything here is canonically located at the root of the package.
+    New code should import directly from there, e.g. "from h5py import File".
+"""
+
+from __future__ import absolute_import
+
+from ._hl import filters
+from ._hl.base import is_hdf5, HLObject
+from ._hl.files import File
+from ._hl.group import Group, SoftLink, ExternalLink, HardLink
+from ._hl.dataset import Dataset
+from ._hl.datatype import Datatype
+from ._hl.attrs import AttributeManager
 
 

@@ -8,10 +8,37 @@ all: local_assembly/shiftSamPos \
   pbsamstream/pbsamstream \
   samtools/samtools \
   environments/python2.7/bin/activate \
-  setup_phasedsv.sh
+  setup_phasedsv.sh \
+  quiver/bin/variantCaller.new
 
 environments/python2.7/bin/activate:
 	./setup_virtualenv.sh
+
+quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py: local_assembly/pbgreedyphase/boost_1_66_0/stage/lib/libboost_program_options.a
+	mkdir -p quiver/lib/python2.7/site-packages/
+	cd GenomicConsensus && \
+  python setup.py build --boost=$(PWD)/../local_assembly/pbgreedyphase/boost_1_66_0 && \
+  python setup.py install --prefix=$(PWD)/quiver/lib/
+
+quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
+	mkdir -p quiver/lib/python2.7/site-packages/
+	cd pbcommand && python setup.py build && python setup.py install  --prefix=$(PWD)/quiver/lib/
+
+quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg
+	mkdir -p quiver/lib/python2.7/site-packages/
+	cd GenomicConsensus && python setup.py build && python setup.py install --prefix=$(PWD)/quiver/lib/
+
+pbsamstream/pbbam/build/bin/pbindex:
+	cd pbsamstream && make
+
+quiver/bin/pbindex: pbsamstream/pbbam/build/bin/pbindex
+	cp $^ $@
+
+quiver/bin/variantCaller.new: quiver/bin/quiver quiver/bin/pbindex
+	echo "#!/usr/bin/env python" > quiver/bin/variantCaller.new
+	tail -n +2 quiver/bin/variantCaller >> quiver/bin/variantCaller.new
+	mv -f quiver/bin/variantCaller.new quiver/bin/variantCaller
+	chmod +x  quiver/bin/variantCaller
 
 setup_phasedsv.sh:
 	echo "#!/usr/bin/env bash" > $@

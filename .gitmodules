@@ -37,3 +37,15 @@
 [submodule "hdf5"]
 	path = hdf5
 	url = https://github.com/mortenpi/hdf5.git
+[submodule "pbcommand"]
+	path = pbcommand
+	url = https://github.com/PacificBiosciences/pbcommand
+[submodule "ConsensusCore"]
+	path = ConsensusCore
+	url = https://github.com/PacificBiosciences/ConsensusCore
+[submodule "unanimity"]
+	path = unanimity
+	url = https://github.com/PacificBiosciences/unanimity.git
+[submodule "GenomicConsensus"]
+	path = GenomicConsensus
+	url = https://github.com/PacificBiosciences/GenomicConsensus

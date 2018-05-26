@@ -82,7 +82,6 @@ echo "starting" $DIR
 PARAMS=`cat $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
 source $BASE/../setup_phasedsv.sh
-echo $LD_LIBRARY_PATH
 
 mkdir -p $DEST/samfiles
 mkdir -p $DEST/assemblies
@@ -99,13 +98,12 @@ bedtools sort -i $DIR/Regions.bed | bedtools merge | awk '{ print $1":"$2"-"$3;}
 
 for r in `cat $DIR/Regions.rgn`; do
 		n=`echo $r | tr ":" "."`
-		echo $BAMS
 		samtools merge -u -f -b $BAMS -R $r $DIR/reads.region.ch.$n.bam
 		samtools index $DIR/reads.region.ch.$n.bam
-		echo $MOBAMS
+		
 		samtools merge -u -f -b $MOBAMS -R $r $DIR/reads.region.mo.$n.bam
 		samtools index $DIR/reads.region.mo.$n.bam
-		echo $FABAMS
+	
 		samtools merge -u -f -b $FABAMS -R $r $DIR/reads.region.fa.$n.bam
 		samtools index $DIR/reads.region.fa.$n.bam
 

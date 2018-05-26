@@ -5,10 +5,10 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='libhdf5_hl_cpp.so.11'
+dlname='libhdf5_hl_cpp.so.8'
 
 # Names of this library.
-library_names='libhdf5_hl_cpp.so.11.0.0 libhdf5_hl_cpp.so.11 libhdf5_hl_cpp.so'
+library_names='libhdf5_hl_cpp.so.8.0.1 libhdf5_hl_cpp.so.8 libhdf5_hl_cpp.so'
 
 # The name of the static archive.
 old_library='libhdf5_hl_cpp.a'
@@ -17,15 +17,15 @@ old_library='libhdf5_hl_cpp.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/lib64 /panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/hdf5-1.8.16/lib/libhdf5_hl.la /panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/hdf5-1.8.16/lib/libhdf5_cpp.la /panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/hdf5-1.8.16/lib/libhdf5.la -lz -ldl /home/cmb-16/mjc/shared/lib/../lib64/libstdc++.la'
+dependency_libs=' -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib -L/panfs/cmb-panasas2/mchaisso/pitchfork/deployment/lib64 /panfs/cmb-panasas2/mchaisso/pitchfork/staging/hdf5-1.8.12/lib/libhdf5_hl.la /panfs/cmb-panasas2/mchaisso/pitchfork/staging/hdf5-1.8.12/lib/libhdf5_cpp.la /panfs/cmb-panasas2/mchaisso/pitchfork/staging/hdf5-1.8.12/lib/libhdf5.la -lz -ldl /home/cmb-16/mjc/shared/lib/../lib64/libstdc++.la'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
 
 # Version information for libhdf5_hl_cpp.
-current=11
+current=8
 age=0
-revision=0
+revision=1
 
 # Is this an already installed library?
 installed=yes
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/panfs/cmb-panasas2/mchaisso/distros/pitchfork/staging/hdf5-1.8.16/lib'
+libdir='/panfs/cmb-panasas2/mchaisso/pitchfork/staging/hdf5-1.8.12/lib'

@@ -1,4 +1,4 @@
-prefix=/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment
+prefix=/panfs/cmb-panasas2/mchaisso/pitchfork/deployment
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 sharedlibdir=${libdir}
