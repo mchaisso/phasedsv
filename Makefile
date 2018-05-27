@@ -9,7 +9,8 @@ all: local_assembly/shiftSamPos \
   samtools/samtools \
   environments/python2.7/bin/activate \
   setup_phasedsv.sh \
-  quiver/bin/variantCaller.new
+  quiver/bin/variantCaller.new \
+  config.sh
 
 environments/python2.7/bin/activate:
 	./setup_virtualenv.sh
@@ -49,6 +50,8 @@ quiver/bin/variantCaller.new: quiver/bin/quiver quiver/bin/pbindex
 	mv -f quiver/bin/variantCaller.new quiver/bin/variantCaller
 	chmod +x  quiver/bin/variantCaller
 
+
+
 setup_phasedsv.sh:
 	echo "#!/usr/bin/env bash" > $@
 	echo "source "$(PWD)"/environments/python2.7/bin/activate" >> $@
@@ -57,13 +60,19 @@ setup_phasedsv.sh:
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/quiver/lib64/">> $@
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/hdf5/build/lib/">> $@
 	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/local_assembly/pbgreedyphase/boost_1_66_0/stage/lib/">> $@
-	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/local_assembly/pbgreedyphase/liblzma/build/lib">> $@
+	echo "export LD_LIBRARY_PATH=\$$LD_LIBRARY_PATH:"$(PWD)"/local_assembly/pbgreedyphase/lzma/build/lib">> $@
 	echo "export PYTHONPATH=\$$PYTHONPATH:"$(PWD)"/quiver/lib/python2.7/site-packages/">> $@
 	echo "export PATH=\$$PATH:"$(PWD)"/quiver/bin/" >> $@
 	echo "export PATH=\$$PATH:"$(PWD)"/bin/" >> $@	
 	echo "#" >> $@
 	echo "# Add custom configuration here." >> $@
 	echo "#" >> $@
+
+config.sh: setup_phasedsv.sh
+	echo "source $(PWD)/setup_phasedsv.sh" > $@
+	echo "# Add any additional configuration here. If your system" >> $@
+	echo "# uses modules, this will likely involve loading required" >> $@
+	echo "# modules.">> $@
 
 bin/vt:
 	mkdir -p bin

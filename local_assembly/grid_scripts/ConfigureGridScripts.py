@@ -3,6 +3,7 @@ import sys
 import argparse
 import os
 import math
+import subprocess
 
 ap=argparse.ArgumentParser(description="Prepare submission scripts for sge, uge, or slurm cluster management systems.")
 
@@ -41,19 +42,33 @@ if args.grid == "slurm":
     print "\nCreated job script '" + gridFileName + "'"
     print "Created submission script '" + submit+ "'.  You may need to modify"
     print "the submission script for custom array parameters at your site."
+
+def GetMaxTasks():
+    cmd="qconf -sconf"
+    res = subprocess.check_output(cmd.split()).split("\n")
+    for line in res:
+        vals = line.split()
+        if vals[0] == "max_aj_tasks":
+            return int(vals[1])
+    # Expected default value
+    return 75000
+    
+    
+
     
 
 if args.grid == "sge":
-    maxJobsPerFile=7
-    nFiles = int(math.ceil(numRegions/maxJobsPerFile))
+    maxJobsPerFile=GetMaxTasks()
+
+    nFiles = int(math.ceil(float(numRegions)/maxJobsPerFile))
     startJob=1
     allJobs=[]
     for i in range(0,nFiles):
         gridFileName=args.base + "." + str(i) + ".run.sh"
         gf=open(gridFileName,'w')
         gf.write("#!/usr/bin/env bash\n")
-        endJob=min(nFiles, startJob+maxJobsPerFile)
-        gf.write("#$ -t {}-{} -tc {} -S /bin/bash -V  -e /dev/null -o /dev/null -l mfree=3G -l h_rt=01:00:00 -pe serial 1\n".format(startJob, endJob, args.conc))
+        endJob=min(numRegions, startJob+maxJobsPerFile-1)
+        gf.write("#$ -t {}-{} -tc {} -S /bin/bash -V  -e /dev/null -o /dev/null -l mfree=2G -l h_rt=01:00:00 -pe serial 4\n".format(startJob, endJob, args.conc))
         gf.write(assemblyScript +" `awk \"NR == $SGE_TASK_ID\" " + args.regions + " ` " + args.params + "\n")
         startJob+=maxJobsPerFile
         gf.close()
@@ -67,10 +82,10 @@ if args.grid == "sge":
             hold = " -hold_jid $h{} ".format(i-1)
         else:
             hold = ""
-        sf.write("output=`qsub {} {}`\n".format(hold, allJobs[i]))
-        sf.write("h{}=`echo $output | tr \" \" \"\\n\"  | grep -A 1 job | tail -1 | tr \".\" \"\t\" | cut -f 1`\n".format(i))
+        sf.write("output=`qsub -cwd {} {}`\n".format(hold, allJobs[i]))
+        sf.write("h{}=`echo $output | tr \" \" \"\\n\"  | grep -A 1 job | tail -1 | tr \".\" \"\\t\" | cut -f 1`\n".format(i))
     sf.close()
         
-    print("\nCreated job script(s) '" + ",".join(allJobs) + "'")
+    print("\nCreated job script(s) '" + ", ".join(allJobs) + "'")
     print("Created submission script '" + submit+ "'.  You may need to modify")
     print("the submission script for custom array parameters at your site.")

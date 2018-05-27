@@ -3,3 +3,4 @@ environments
 setup_phasedsv.sh
 quiver
 quiver_bin/**/*.pyc
+config.sh
