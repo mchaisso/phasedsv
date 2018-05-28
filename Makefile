@@ -11,6 +11,7 @@ all: local_assembly/shiftSamPos \
   setup_phasedsv.sh \
   quiver/bin/variantCaller.new \
   config.sh
+SHELL := /bin/bash
 
 environments/python2.7/bin/activate:
 	./setup_virtualenv.sh
