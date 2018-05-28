@@ -3,8 +3,6 @@
 BASE=$(dirname $0)
 SAM=$1
 if [ $READ_SOURCE="HGSVG_BAM" ]; then
-		cp $SAM ~/projects/testing/$$.sam
-		cp assembly.fasta  ~/projects/testing/$$.assembly.fasta
 		$BASE/blasr/pbihdfutils/bin/samtobas $SAM $SAM.bas.h5
 		$BASE/blasr/alignment/bin/blasr $SAM.bas.h5 assembly.fasta  \
 				-clipping subread -sam -nproc 8 -out  /dev/stdout -preserveReadTitle | \
