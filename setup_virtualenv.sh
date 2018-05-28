@@ -1,8 +1,8 @@
 virtualenv environments/python2.7 --python=`which python`
 source environments/python2.7/bin/activate
 p=./environments/python2.7/bin/python
-
-export PYTHONPATH=$PYTHONPATH:$PWD/environments/python2.7/lib/python2.7/site-packages:
+#export PYTHONPATH=$PWD/environments/python2.7/lib/python2.7/site-packages:$PYTHONPATH\
+	
 $p -m pip install --upgrade pip
 $p -m pip install --no-cache-dir six
 $p -m pip install --no-cache-dir scipy
