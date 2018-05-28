@@ -22,7 +22,7 @@ quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.p
   cd ConsensusCore && \
   python setup.py build --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0 && \
   export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
-  python setup.py install --prefix=$(PWD)/quiver/
+  python setup.py install --prefix=$(PWD)/quiver/ --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0
 
 quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
 	mkdir -p quiver/lib/python2.7/site-packages/
