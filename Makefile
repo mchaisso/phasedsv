@@ -27,6 +27,7 @@ quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.p
 environments/python2.7/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg-info:
 	cd ConsensusCore && python setup.py install_egg_info
 
+
 quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
 	mkdir -p quiver/lib/python2.7/site-packages/
 	cd pbcommand && python setup.py build && \
