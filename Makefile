@@ -22,8 +22,10 @@ quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.p
   cd ConsensusCore && \
   python setup.py build --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0 && \
   export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
-  python setup.py install --prefix=$(PWD)/quiver/ --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0
-	python setup.py install_egg_ingo
+  python setup.py install --prefix=$(PWD)/quiver/ --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0 && \
+
+environments/python2.7/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg-info:
+	cd ConsensusCore && python setup.py install_egg_info
 
 quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
 	mkdir -p quiver/lib/python2.7/site-packages/
@@ -31,7 +33,7 @@ quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
     export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
     python setup.py install  --prefix=$(PWD)/quiver/
 
-quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg environments/python2.7/bin/activate
+quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg environments/python2.7/bin/activate environments/python2.7/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg-info
 	mkdir -p quiver/lib/python2.7/site-packages/
 	source $(PWD)/environments/python2.7/bin/activate && \
     cd GenomicConsensus && \
