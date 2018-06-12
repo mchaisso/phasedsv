@@ -5,6 +5,7 @@ Installing Phased-SV.
   CMAKE >= 1.10
 	ninja >= 1.8
 	swig >= 3.0.5
+  samtools >= 1.7
 
 These should all be accessible in your path.
 
@@ -17,3 +18,6 @@ It may be necessary to configure your build. In particular, if the g++ >= 7.0 is
 
 CC=/path/to/gcc
 CXX=/path/to/g++
+
+
+

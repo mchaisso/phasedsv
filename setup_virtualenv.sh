@@ -14,5 +14,4 @@ $p -m pip install --no-cache-dir networkx
 $p -m pip install --no-cache-dir intervaltree
 $p -m pip install --no-cache-dir biopython
 $p -m pip install --no-cache-dir Cython
-$p -m pip install --no-cache-dir h5py
 

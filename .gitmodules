@@ -49,3 +49,6 @@
 [submodule "GenomicConsensus"]
 	path = GenomicConsensus
 	url = https://github.com/PacificBiosciences/GenomicConsensus
+[submodule "h5py"]
+	path = h5py
+	url = https://github.com/h5py/h5py.git

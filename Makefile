@@ -8,6 +8,7 @@ all: local_assembly/shiftSamPos \
   pbsamstream/pbsamstream \
   samtools/samtools \
   environments/python2.7/bin/activate \
+  environments/python2.7/lib/python2.7/site-packages/h5py-2.8.0.post0-py2.7-linux-x86_64.egg \
   setup_phasedsv.sh \
   quiver/bin/variantCaller.new \
   config.sh
@@ -15,6 +16,15 @@ SHELL := /bin/bash
 
 environments/python2.7/bin/activate:
 	./setup_virtualenv.sh
+
+environments/python2.7/lib/python2.7/site-packages/h5py-2.8.0.post0-py2.7-linux-x86_64.egg: environments/python2.7/bin/activate hdf5/build/lib/libhdf5_cpp.so
+	source ./environments/python2.7/bin/activate && \
+   cd h5py && \
+   python setup.py configure --hdf5=$(PWD)/hdf/build && \
+   python setup.py build && \
+   python setup.py install && \
+   python setup.py install_egg_info 
+
 
 quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py: local_assembly/pbgreedyphase/boost_1_66_0/stage/lib/libboost_program_options.a environments/python2.7/bin/activate
 	mkdir -p quiver/lib/python2.7/site-packages/
@@ -34,7 +44,7 @@ quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
     export PYTHONPATH=$$PYTHONPATH:$(PWD)/quiver/lib/python2.7/site-packages/ && \
     python setup.py install  --prefix=$(PWD)/quiver/
 
-quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg environments/python2.7/bin/activate environments/python2.7/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg-info
+quiver/bin/quiver: quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.py quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg environments/python2.7/bin/activate environments/python2.7/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg-info environments/python2.7/lib/python2.7/site-packages/h5py-2.8.0.post0-py2.7-linux-x86_64.egg
 	mkdir -p quiver/lib/python2.7/site-packages/
 	source $(PWD)/environments/python2.7/bin/activate && \
     cd GenomicConsensus && \
@@ -95,12 +105,14 @@ local_assembly/pbgreedyphase/partitionByPhasedSNVs: hdf5/build/lib/libhdf5_cpp.s
 local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.so
 	cd local_assembly && make
 
+hdf5-1.8.14:
+	cd wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.14/src/hdf5-1.8.14.tar.gz && tar zxvf hdf5-1.8.14.tar.gz
 
 hdf5/build/lib/libhdf5_cpp.so:
 	rm -rf $(PWD)/hdf5/cmake_build
 	mkdir -p $(PWD)/hdf5/build
 	export CXXFLAGS="-std=c++11"
-	cd hdf5/ && \
+	cd hdf5-1.8.14/ && \
   mkdir cmake_build && \
   cd cmake_build && \
   CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++` -DBUILD_SHARED_LIBS:BOOL=ON -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \

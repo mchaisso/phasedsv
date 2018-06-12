@@ -36,6 +36,7 @@ shift
 JOBNAME="loc_asm"
 DELAY=1
 INDEX=1
+DEST="asm"
 while getopts “hj:i:d:” OPTION
 do
      case $OPTION in
