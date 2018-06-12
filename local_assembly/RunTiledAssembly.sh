@@ -20,7 +20,7 @@ shift
 PARAMFILE=$1
 shift
 DIR="asm"
-DEST="asm'
+DEST="asm"
 ASSEMBLER=$BASE/RunPartitionedAssembly.mak
 
 while getopts “hj:a:d:” OPTION

@@ -132,3 +132,6 @@ pbsamstream/pbsamstream:
 
 samtools/samtools: local_assembly/pbgreedyphase/partitionByPhasedSNVs
 	cd samtools && make CFLAGS=-I$(abspath local_assembly/pbgreedyphase/bzip2-1.0.6) LDFLAGS="-L$(abspath local_assembly/pbgreedyphase/bzip2-1.0.6) -lbz2"
+	mkdir -p bin
+	cp samtools/samtools bin/
+
