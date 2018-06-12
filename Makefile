@@ -35,7 +35,9 @@ quiver/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg/ConsensusCore.p
   python setup.py install --prefix=$(PWD)/quiver/ --boost=$(PWD)/local_assembly/pbgreedyphase/boost_1_66_0
 
 environments/python2.7/lib/python2.7/site-packages/ConsensusCore-1.0.2-py2.7.egg-info:
-	cd ConsensusCore && python setup.py install_egg_info
+	source ./environments/python2.7/bin/activate && \
+  cd ConsensusCore && \
+  python setup.py install_egg_info
 
 
 quiver/lib/python2.7/site-packages/pbcommand-1.0.0-py2.7.egg:
