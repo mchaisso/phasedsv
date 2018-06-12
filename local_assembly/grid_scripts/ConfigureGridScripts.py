@@ -21,7 +21,7 @@ args=ap.parse_args()
 
 regionsFile = open(args.regions)
 numRegions = len(regionsFile.readlines())
-assemblyScript=swd+"/../AssembleRegions.sh"
+assemblyScript=swd+"/../RunTiledAssembly.sh"
 if args.runTrio:
     assemblyScript=swd+"/../RunTrioTiledAssemblyOnRegions.sh"
 
