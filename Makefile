@@ -20,7 +20,7 @@ environments/python2.7/bin/activate:
 environments/python2.7/lib/python2.7/site-packages/h5py-2.8.0.post0-py2.7-linux-x86_64.egg: environments/python2.7/bin/activate hdf5/build/lib/libhdf5_cpp.so
 	source ./environments/python2.7/bin/activate && \
    cd h5py && \
-   python setup.py configure --hdf5=$(PWD)/hdf/build && \
+   python setup.py configure --hdf5=$(PWD)/hdf5/build && \
    python setup.py build && \
    python setup.py install && \
    python setup.py install_egg_info 
