@@ -108,9 +108,9 @@ local_assembly/blasr/alignment/bin/blasr: hdf5/build/lib/libhdf5_cpp.so
 	cd local_assembly && make
 
 hdf5-1.8.14:
-	cd wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.14/src/hdf5-1.8.14.tar.gz && tar zxvf hdf5-1.8.14.tar.gz
+	wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.14/src/hdf5-1.8.14.tar.gz && tar zxvf hdf5-1.8.14.tar.gz
 
-hdf5/build/lib/libhdf5_cpp.so:
+hdf5/build/lib/libhdf5_cpp.so: hdf5-1.8.14
 	rm -rf $(PWD)/hdf5/cmake_build
 	export CXXFLAGS="-std=c++11"
 	cd hdf5-1.8.14/ && \
