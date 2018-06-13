@@ -112,7 +112,6 @@ hdf5-1.8.14:
 
 hdf5/build/lib/libhdf5_cpp.so:
 	rm -rf $(PWD)/hdf5/cmake_build
-	mkdir -p $(PWD)/hdf5/build
 	export CXXFLAGS="-std=c++11"
 	cd hdf5-1.8.14/ && \
   mkdir cmake_build && \
