@@ -116,7 +116,12 @@ hdf5/build/lib/libhdf5_cpp.so: hdf5-1.8.14
 	cd hdf5-1.8.14/ && \
   mkdir cmake_build && \
   cd cmake_build && \
-  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` -DCMAKE_CPP_COMPILER=`which g++` -DBUILD_SHARED_LIBS:BOOL=ON -DHDF5_BUILD_CPP_LIB:BOOL=ON  -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
+  CXXFLAGS=-std=c++11 && cmake .. -DCMAKE_C_COMPILER=`which gcc` \
+        -DCMAKE_CPP_COMPILER=`which g++` \
+        -DBUILD_SHARED_LIBS:BOOL=ON \
+        -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+        -DHDF5_BUILD_HL_LIB:BOOL=ON \
+        -DCMAKE_INSTALL_PREFIX:PATH=$(PWD)/hdf5/build && \
   make -j 8 VERBOSE=1 && \
   make install
 
