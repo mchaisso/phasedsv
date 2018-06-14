@@ -15,13 +15,22 @@ exit 1
 
 
 REGION=$1
-
 shift
 PARAMFILE=$1
 shift
 DIR="asm"
 DEST="asm"
 ASSEMBLER=$BASE/RunPartitionedAssembly.mak
+
+info=`echo $REGION | tr "/" "\t" | cut -f 2-`
+REGION=`echo $REGION | tr "/" "\t" | cut -f 1`
+
+AUTO="HET"
+echo $info | grep -q "auto"
+
+if [ $? -eq 0 ]; then
+		AUTO="AUTO"
+fi
 
 while getopts “hj:a:d:” OPTION
 do
@@ -52,6 +61,8 @@ echo "target region " $TARGETREGION
 
 
 PARAMS=`grep -v "^#" $PARAMFILE | tr "\n" " "`
+PARAMS="$PARAMS IS_AUTO=$AUTO"
+
 source $PARAMFILE
 
 mkdir -p $DEST/samfiles
@@ -67,7 +78,7 @@ echo "RUNNING IN " $DIR/$REGION
 #
 
 echo "setting up"
-#source $BASE/../setup_phasedsv.sh
+source $BASE/../setup_phasedsv.sh
 
 if [ -e $DEST/assemblies/$REGION.fasta ]; then
 	 echo $DEST/assemblies/$REGION.fasta
@@ -75,11 +86,11 @@ if [ -e $DEST/assemblies/$REGION.fasta ]; then
 exit 0
 fi
 
-echo "running makefile"
-echo make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS
+
+echo "make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS"
 make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS || true;
 
-echo "MOVING $DIR/$REGION/assembly.consensus.fasta $DEST/assemblies/$REGION.fasta"
+
 popd
 mv -f $DIR/$REGION/assembly.consensus.fasta ./$DEST/assemblies/$REGION.fasta
 mv -f $DIR/$REGION/assembly.consensus.fasta.sam ./$DEST/samfiles/$REGION.sam  
