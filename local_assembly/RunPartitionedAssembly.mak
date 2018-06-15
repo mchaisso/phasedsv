@@ -9,6 +9,7 @@ START=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 2)
 END=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 3)
 SNVSTART=$($START+$WINDOW)
 SNVEND=$($END-$WINDOW)
+SAMASSEMBLER=$(MAKE_DIR)/CanuSamAssembly.mak
 
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 STREGION=$(shell echo $(REGION) | sed 's/\./:/')
@@ -31,7 +32,7 @@ region.vcf:
 	tabix -h $(VCF) $(STREGION) > $@
 
 h1.sam: region.vcf reads.sam 
-	$(MAKE_DIR)/local_assembly/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam $@ --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE)
+	$(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam $@ --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE)
 
 
 reads.sam:
@@ -48,7 +49,7 @@ h2/assembly.consensus.fasta.sam: h2.sam h1/assembly.consensus.fasta.sam
 	mkdir -p h2
 	if [ $(IS_AUTO) == "AUTO" ]; then \
     cp h1/assembly.consensus.fasta h2/; \
-    cp h1/assembly.consensus.fasta.sam h2/ \
+    cp h1/assembly.consensus.fasta.sam h2/; \
   else \
 	 cd h2 && make -f $(SAMASSEMBLER) SAM=../h2.sam HAP=H2 REGION=$(STREGION) REF=$(REF) || true ; \
   fi
