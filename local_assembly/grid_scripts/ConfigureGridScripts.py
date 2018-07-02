@@ -10,12 +10,12 @@ ap=argparse.ArgumentParser(description="Prepare submission scripts for sge, uge,
 swd=os.path.dirname(os.path.realpath(__file__))
 
 ap.add_argument("--regions", help="Full path to regions.", required=True)
-ap.add_argument("--params", help="Path to parameter file", required=True)
+ap.add_argument("--params", help="Full path to parameter file.", required=True)
 ap.add_argument("--runTrio", help="Prepare commands for trio assembly.", default=False, action='store_true')
 ap.add_argument("--grid", help="Grid type", choices=["sge", "uge", "slurm"], required=True)
 ap.add_argument("--base", help="base name for grid commands", default="psv_grid")
 ap.add_argument("--conc", help="Number of concurrent jobs", default="50")
-ap.add_argument("--config", help="Extra configuration parameters for job submission", default="")
+ap.add_argument("--config", help="Extra configuration parameters for job submission, for example specification of a specific queue, etc", default="")
 
 args=ap.parse_args()
 
