@@ -5,14 +5,14 @@ import os
 import math
 import subprocess
 
-ap=argparse.ArgumentParser(description="Prepare submission scripts for sge, uge, or slurm cluster management systems.")
+ap=argparse.ArgumentParser(description="Prepare submission scripts for sge, pbs, or slurm cluster management systems.")
 
 swd=os.path.dirname(os.path.realpath(__file__))
 
 ap.add_argument("--regions", help="Full path to regions.", required=True)
 ap.add_argument("--params", help="Full path to parameter file.", required=True)
 ap.add_argument("--runTrio", help="Prepare commands for trio assembly.", default=False, action='store_true')
-ap.add_argument("--grid", help="Grid type", choices=["sge", "uge", "slurm"], required=True)
+ap.add_argument("--grid", help="Grid type", choices=["sge", "pbs", "slurm"], required=True)
 ap.add_argument("--base", help="base name for grid commands", default="psv_grid")
 ap.add_argument("--conc", help="Number of concurrent jobs", default="50")
 ap.add_argument("--config", help="Extra configuration parameters for job submission, for example specification of a specific queue, etc", default="")
@@ -54,6 +54,44 @@ def GetMaxTasks():
     return 75000
     
     
+def GetMaxTasksPBS():
+    sys.stderr.write("""CAUTION! Setting max tasks to 10,000 although this may not 
+be compatible with your PBS system.""")
+    return 10000
+
+if args.grid == "pbs":
+    maxJobsPerFile=GetMaxTasksPBS()
+
+    nFiles = int(math.ceil(float(numRegions)/maxJobsPerFile))
+    startJob=1
+    allJobs=[]
+    for i in range(0,nFiles):
+        gridFileName=args.base + "." + str(i) + ".run.sh"
+        gf=open(gridFileName,'w')
+        gf.write("#!/usr/bin/env bash\n")
+        endJob=min(numRegions, startJob+maxJobsPerFile-1)
+        gf.write("#PBS -t {}-{}%{}\n".format(startJob, endJob, args.conc))
+        gf.write("#PBS -l walltime=30:00:00,nodes=1:ppn=4,mem=4gb\n")
+        gf.write(assemblyScript +" `awk \"NR == $PBS_ARRAYID\" " + args.regions + " ` " + args.params + "\n")
+        startJob+=maxJobsPerFile
+        gf.close()
+        allJobs.append(gridFileName)
+    
+    submit=args.base+".submit.sh"
+    sf=open(submit,'w')
+    sf.write("#!/usr/bin/env bash\n")
+    for i in range(0,len(allJobs)):
+        if i > 0:
+            hold = " -hold_jid $h{} ".format(i-1)
+        else:
+            hold = ""
+        sf.write("output=`qsub -cwd {} {}`\n".format(hold, allJobs[i]))
+        sf.write("h{}=`echo $output | tr \" \" \"\\n\"  | grep -A 1 job | tail -1 | tr \".\" \"\\t\" | cut -f 1`\n".format(i))
+    sf.close()
+        
+    print("\nCreated job script(s) '" + ", ".join(allJobs) + "'")
+    print("Created submission script '" + submit+ "'.  You may need to modify")
+    print("the submission script for custom array parameters at your site.")
 
     
 
