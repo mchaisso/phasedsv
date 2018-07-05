@@ -82,7 +82,7 @@ source $BASE/../setup_phasedsv.sh
 
 if [ -e $DEST/assemblies/$REGION.fasta ]; then
 	 echo $DEST/assemblies/$REGION.fasta
-	 echo "exit early"
+	 echo "Assembly already exists"
 exit 0
 fi
 
@@ -93,7 +93,6 @@ make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS || true;
 
 popd
 
-echo mv -f $DIR/$REGION/assembly.consensus.fasta $DEST/assemblies/$REGION.fasta
 mv -f $DIR/$REGION/assembly.consensus.fasta $DEST/assemblies/$REGION.fasta
 mv -f $DIR/$REGION/assembly.consensus.fasta.sam $DEST/samfiles/$REGION.sam  
 mv -f $DIR/$REGION/summary.txt $DEST/records/$REGION.txt
