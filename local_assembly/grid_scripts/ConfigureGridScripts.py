@@ -25,23 +25,38 @@ assemblyScript=swd+"/../RunTiledAssembly.sh"
 if args.runTrio:
     assemblyScript=swd+"/../RunTrioTiledAssemblyOnRegions.sh"
 
+def GetMaxTasksSLURM():
+    cmd="scontrol --details show config"
+    resStr=subprocess.check_output(cmd.split())
+
+    res = str(resStr).split("\\n")
+    for line in res:
+        vals = line.strip().split("=")
+        if vals[0].strip() == "MaxArraySize":
+            return int(vals[1].strip())
+    return 1000
 
 if args.grid == "slurm":
+    maxTasks = GetMaxTasksSLURM()
     gridFileName=args.base+".run.sh"
     gf=open(gridFileName,'w')
     gf.write("#!/usr/bin/env bash\n")
-    gf.write(assemblyScript +" `awk \"NR == $SLURM_ARRAY_TASK_ID\" " + args.regions + " ` " + args.params + "\n")
+    gf.write(assemblyScript +" $1 " + args.params + "\n")
     gf.close()
 
     submit=args.base+".submit.sh"
     sf=open(submit,'w')
     sf.write("#!/usr/bin/env bash\n")
-    sf.write("sbatch --cpus-per-task=4 --mem=4G --time=1:00:00 --array=1-{}%{} {} {}\n".format(numRegions, args.conc, gridFileName, args.config))
+    sf.write("cat {regions} | xargs -I@ -P {jobs} srun --cups-per-task=4 --mem=4G --time=1:00:00  ".format(regions=args.regions, jobs=args.conc) + args.base+".run.sh @\n")
+#    sf.write("sbatch --cpus-per-task=4 --mem=4G --time=1:00:00 --array=1-{}%{} {} {}\n".format(numRegions, args.conc, gridFileName, args.config))
     sf.close()
 
-    print "\nCreated job script '" + gridFileName + "'"
-    print "Created submission script '" + submit+ "'.  You may need to modify"
-    print "the submission script for custom array parameters at your site."
+    print("\nCreated job script '" + gridFileName + "'")
+    print("Created submission script '" + submit+ "'.  You may need to modify")
+    print("the submission script for custom array parameters at your site.")
+
+
+
 
 def GetMaxTasks():
     cmd="qconf -sconf"

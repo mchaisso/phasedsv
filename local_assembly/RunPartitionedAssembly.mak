@@ -2,13 +2,14 @@
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 include $(MAKE_DIR)/Configure.mak
 
-
+ENV=$(CONDA_PREFIX)
 COVERAGE?=10
 CHROM=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 1)
 START=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 2)
 END=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 3)
 SNVSTART=$($START+$WINDOW)
 SNVEND=$($END-$WINDOW)
+SAMASSEMBLER=$(MAKE_DIR)/CanuSamAssembly.mak
 
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 STREGION=$(shell echo $(REGION) | sed 's/\./:/')
@@ -31,12 +32,19 @@ region.vcf:
 	tabix -h $(VCF) $(STREGION) > $@
 
 h1.sam: region.vcf reads.sam 
-	$(MAKE_DIR)/local_assembly/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam $@ --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE)
+	if [[ "$(IS_AUTO)" == "AUTO" ]]; then  \
+     cp reads.sam h1.sam; \
+  else \
+    $(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE); \
+  fi
 
+h2.sam: h1.sam
+	touch h2.sam
 
 reads.sam:
-	cat $(BAMS) | xargs -i samtools view -h -q 30 {} $(CHROM):$(START)-$(END) > $@.full
-	$(MAKE_DIR)/mcutils/src/samToBed $@.full | $(PBS)/local_assembly/DetectChimeras.py > filter.list
+	samtools view -H `head -1 $(BAMS)` > $@.full
+	cat $(BAMS) | xargs -i samtools view  -q 30 {} $(CHROM):$(START)-$(END) >> $@.full
+	$(MAKE_DIR)/../mcutils/src/samToBed $@.full | $(MAKE_DIR)/DetectChimeras.py > filter.list
 	grep -v -f filter.list $@.full > $@
 
 
@@ -48,7 +56,7 @@ h2/assembly.consensus.fasta.sam: h2.sam h1/assembly.consensus.fasta.sam
 	mkdir -p h2
 	if [ $(IS_AUTO) == "AUTO" ]; then \
     cp h1/assembly.consensus.fasta h2/; \
-    cp h1/assembly.consensus.fasta.sam h2/ \
+    cp h1/assembly.consensus.fasta.sam h2/; \
   else \
 	 cd h2 && make -f $(SAMASSEMBLER) SAM=../h2.sam HAP=H2 REGION=$(STREGION) REF=$(REF) || true ; \
   fi

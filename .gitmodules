@@ -24,7 +24,7 @@
 	ignore = dirty
 [submodule "hgsvg"]
 	path = hgsvg
-	url = https://github.com/EichlerLab/hgsvg.git
+	url = https://github.com/ChaissonLab/hgsvg.git
 	ignore = dirty
 [submodule "vt"]
 	path = vt
