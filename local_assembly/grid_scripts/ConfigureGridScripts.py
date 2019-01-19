@@ -29,26 +29,41 @@ def GetMaxTasksSLURM():
     cmd="scontrol --details show config"
     resStr=subprocess.check_output(cmd.split())
 
-    res = str(resStr).split("\\n")
+    res = str(resStr).split("\n")
     for line in res:
         vals = line.strip().split("=")
         if vals[0].strip() == "MaxArraySize":
             return int(vals[1].strip())
     return 1000
 
+def CountLines(fn):
+    f=open(fn)
+    return len(f.readlines())
+
 if args.grid == "slurm":
     maxTasks = GetMaxTasksSLURM()
     gridFileName=args.base+".run.sh"
     gf=open(gridFileName,'w')
+    nLines=CountLines(args.regions)
     gf.write("#!/usr/bin/env bash\n")
-    gf.write(assemblyScript +" $1 " + args.params + "\n")
+    
+    gf.write("for i in {0.."+str(nLines-1) +"}; do \n")
+    gf.write(" let rem=\" $i % $1\";\n")
+    gf.write("  if [ $rem == \"$SLURM_ARRAY_TASK_ID\" ]; then \n")
+    gf.write(assemblyScript +"` awk \"NR == $i\" " + args.regions + "` " + args.params + "\n")
+    gf.write("  fi\n")
+    gf.write("done")
     gf.close()
 
     submit=args.base+".submit.sh"
     sf=open(submit,'w')
     sf.write("#!/usr/bin/env bash\n")
-    sf.write("cat {regions} | xargs -I@ -P {jobs} srun --cups-per-task=4 --mem=4G --time=1:00:00  ".format(regions=args.regions, jobs=args.conc) + args.base+".run.sh @\n")
-#    sf.write("sbatch --cpus-per-task=4 --mem=4G --time=1:00:00 --array=1-{}%{} {} {}\n".format(numRegions, args.conc, gridFileName, args.config))
+#    sf.write("cat {regions} | xargs -I@ -P {jobs} srun --cups-per-task=4 --mem=4G --time=1:00:00  ".format(regions=args.regions, jobs=args.conc) + args.base+".run.sh @\n")
+    sf.write("#SBATCH --cpus-per-task=4\n#SBATCH --mem=4G\n#SBATCH --time=1:00:00\n#SBATCH --exclusive\n")
+    sf.write("#SBATCH --array=0-{}%{}\n".format(maxTasks-1, args.conc))
+    if (args.config is not None):
+        sf.write("#SBATCH " + args.config.replace("\\","") + "\n")    
+    sf.write(os.getcwd() + "/" + gridFileName + " " + str(maxTasks)+ "\n")
     sf.close()
 
     print("\nCreated job script '" + gridFileName + "'")

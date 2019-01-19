@@ -35,7 +35,7 @@ h1.sam: region.vcf reads.sam
 	if [[ "$(IS_AUTO)" == "AUTO" ]]; then  \
      cp reads.sam h1.sam; \
   else \
-    $(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE); \
+    $(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE);  \
   fi
 
 h2.sam: h1.sam

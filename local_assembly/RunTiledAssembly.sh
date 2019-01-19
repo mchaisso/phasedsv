@@ -13,12 +13,12 @@ exit 1
 
 }
 
-
+ORIG_REGION=$1
 REGION=$1
 shift
 PARAMFILE=$1
 shift
-DIR="asm"
+DIR=$TMPDIR/"asm"
 DEST="asm"
 ASSEMBLER=$BASE/RunPartitionedAssembly.mak
 
@@ -26,10 +26,10 @@ info=`echo $REGION | tr "/" "\t" | cut -f 2-`
 REGION=`echo $REGION | tr "/" "\t" | cut -f 1`
 
 AUTO="HET"
-echo $info | grep -q "auto"
+echo $ORIG_REGION | grep -q "HOM"
 
 if [ $? -eq 0 ]; then
-		AUTO="AUTO"
+		AUTO="HOM"
 fi
 
 while getopts “hj:a:d:” OPTION
@@ -69,22 +69,22 @@ mkdir -p $DEST/samfiles
 mkdir -p $DEST/assemblies
 mkdir -p $DEST/records
 
-mkdir -p $DIR/$REGION;
-p=$PWD
-pushd $DIR/$REGION;
-echo "RUNNING IN " $DIR/$REGION
 #
 #  Setup the environment
 #
 
 echo "setting up"
 source $BASE/../setup_phasedsv.sh
-
 if [ -e $DEST/assemblies/$REGION.fasta ]; then
 	 echo $DEST/assemblies/$REGION.fasta
 	 echo "exit early"
 exit 0
 fi
+
+mkdir -p $DIR/$REGION;
+p=$PWD
+pushd $DIR/$REGION;
+echo "RUNNING IN " $DIR/$REGION
 
 
 echo "make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS"
@@ -94,7 +94,7 @@ make -f $ASSEMBLER REGION=$TARGETREGION $PARAMS || true;
 popd
 mv -f $DIR/$REGION/assembly.consensus.fasta ./$DEST/assemblies/$REGION.fasta
 mv -f $DIR/$REGION/assembly.consensus.fasta.sam ./$DEST/samfiles/$REGION.sam  
-mv -f $DIR/$REGION/summary.txt $DEST/records/$REGION.txt
-
+#mv -f $DIR/$REGION/summary.txt $DEST/records/$REGION.txt
+rm -rf $DIR/$REGION
 
 exit 0
