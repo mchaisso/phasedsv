@@ -20,6 +20,3 @@ local_assembly/shiftSamPos: install_flags/dep_conda_link
 local_assembly/pbgreedyphase/partitionByPhasedSNVs: install_flags/dep_conda_link
 	cd local_assembly && make
 
-mcutils/src/samToBed:
-	cd mcutils/src && make -j 8
-
