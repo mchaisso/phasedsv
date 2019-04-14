@@ -12,3 +12,6 @@
 [submodule "local_assembly/pbgreedyphase"]
 	path = local_assembly/pbgreedyphase
 	url = https://github.com/mchaisso/pbgreedyphase
+[submodule "hgsvg"]
+	path = hgsvg
+	url = http://github.com/mchaisso/hgsvg

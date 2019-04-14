@@ -176,6 +176,7 @@ install_flags/dep_conda_link: build/install_flags/env_pacbio_deploy   build/inst
 	ln -rsf build/envs/tools/bin/RepeatMasker bin/RepeatMasker
 	ln -rsf build/envs/tools/bin/trf bin/trf
 	ln -rsf build/envs/tools/bin/bioawk bin/bioawk
+	ln -rss build/envs/tools/bin/bedToBigBed bin/bedToBigBed
 
 	# Flag complete
 	date > $@
