@@ -2,6 +2,8 @@
 
 # Define
 MINICONDA_INSTALLER = Miniconda3-4.5.11-Linux-x86_64.sh
+MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+SHELL=/bin/bash
 
 # All
 .PHONY: all
@@ -10,9 +12,10 @@ build/install_flags/all: \
 	build/install_flags/env_python3_install \
 	build/install_flags/env_pacbio_install \
 	build/install_flags/env_tools_install \
-  install_flags/dep_conda_link
+        build/install_flags/dep_mcutils \
+        install_flags/dep_conda_link
 
-
+#        build/install_flags/shift_sam \
 # python: Refuse unambiguous "python" interpreter (require "python2" or "python3")
 bin/python: python_dummy/python_dummy.sh
 	mkdir -p bin
@@ -34,6 +37,7 @@ build/install_flags/env_python2_install: build/install_flags/env_python2_deploy
 	@set -e; \
 	cd build; \
 	. bin/activate python2; \
+        echo "source $(abspath install_python2.sh);" \
 	source $(abspath install_python2.sh); \
 	conda list > PACKAGES_PYTHON2; \
 	. bin/deactivate
@@ -50,8 +54,9 @@ build/install_flags/env_python2_deploy: build/bin/conda
 build/install_flags/env_python3_install: build/install_flags/env_python3_deploy
 	@set -e; \
 	cd build; \
-	. bin/activate python3; \
-	source $(abspath install_python3.sh); \
+	. bin/activate python3 ; \
+        echo "MD" $(MAKE_DIR)install_python3.sh; \
+	source $(MAKE_DIR)install_python3.sh; \
 	conda list > PACKAGES_PYTHON3; \
 	. bin/deactivate
 	date > $@
@@ -81,9 +86,6 @@ build/install_flags/env_tools_deploy: build/bin/conda
 	bin/conda create --yes --name tools python=3.6.2
 	date > $@
 
-
-
-
 ### Environment: pacbio - PacBio conda toolkit ###
 
 # Install packages
@@ -104,65 +106,83 @@ build/install_flags/env_pacbio_deploy: build/bin/conda
 	bin/conda create --yes --name pacbio python=2.7.15
 	date > $@
 
-# Conda
-install_flags/dep_conda_link: install_flags/dep_conda_build
-	mkdir -p bin install_flags
-
-# python3
-	ln -sf ../conda/build/envs/python3/bin/python3 bin/python3
-	ln -sf ../conda/build/envs/python3/bin/python3 bin/python3.6
-	ln -sf ../conda/build/envs/python3/bin/ipython3 bin/ipython3
-	ln -sf ../conda/build/envs/python3/bin/snakemake bin/snakemake
-
-# python2
-	ln -sf ../conda/build/envs/python2/bin/python2 bin/python2
-
-# pacbio
-	ln -sf ../conda/build/envs/pacbio/bin/python2 bin/pb_python2
-	ln -sf ../conda/build/envs/pacbio/bin/blasr bin/blasr
-	ln -sf ../conda/build/envs/pacbio/bin/pbindex bin/pbindex
-	ln -sf ../conda/build/envs/pacbio/bin/sawriter bin/sawriter
-	ln -sf ../conda/build/envs/pacbio/bin/variantCaller bin/variantCaller
-	ln -sf ../conda/build/envs/pacbio/bin/quiver bin/quiver
-	ln -sf ../conda/build/envs/pacbio/bin/arrow bin/arrow
-	ln -sf ../conda/build/envs/pacbio/bin/bax2bam bin/bax2bam
-  ln -sf ../conda/build/envs/pacbio/bin/pbmm2 bin/pbmm2
-
-# Tools
-	ln -sf ../conda/build/envs/tools/bin/canu bin/canu
-	ln -sf ../conda/build/envs/tools/bin/bedtools bin/bedtools
-	ln -sf ../conda/build/envs/tools/bin/groupBy bin/groupBy
-  ln -sf ../conda/build/envs/tools/bin/vt bin/vt
-	ln -sf ../conda/build/envs/tools/bin/vcfkeepinfo bin/vcfkeepinfo
-	ln -sf ../conda/build/envs/tools/bin/vcf2tsv bin/vcf2tsv
-	ln -sf ../conda/build/envs/tools/bin/vcffixup bin/vcffixup
-	ln -sf ../conda/build/envs/tools/bin/tabix bin/tabix
-	ln -sf ../conda/build/envs/tools/bin/bgzip bin/bgzip
-	ln -sf ../conda/build/envs/tools/bin/seqtk bin/seqtk
-	ln -sf ../conda/build/envs/tools/bin/samtools bin/samtools
-	ln -sf ../conda/build/envs/tools/bin/bamleftalign bin/bamleftalign
-	ln -sf ../conda/build/envs/tools/bin/RepeatMasker bin/RepeatMasker
-	ln -sf ../conda/build/envs/tools/bin/blastp bin/blastp
-	ln -sf ../conda/build/envs/tools/bin/trf bin/trf
-	ln -sf ../conda/build/envs/tools/bin/bcftools bin/bcftools
-	ln -sf ../conda/build/envs/tools/bin/bioawk bin/bioawk
-
-	#mkdir -p share
-	#ln -sf ../conda/build/envs/tools/share/RepeatMasker share/
-
-	# Flag complete
+build/install_flags/dep_mcutils:
+	@set -e ; \
+	cd mcutils/src; \
+	make
 	date > $@
 
-install_flags/dep_conda_build:
-	mkdir -p install_flags
-	make -C conda
+build/install_flags/dep_blasrmc:
+	@set -e ; \
+        cd blasr ; \
+        make
+	date > $@
+
+build/install_flags/shift_sam:
+	@set -e ; \
+        cd ../local_assembly ; \
+        make
+	date > $@
+
+# Conda
+install_flags/dep_conda_link: build/install_flags/env_pacbio_deploy   build/install_flags/env_pacbio_install \
+  build/install_flags/env_tools_deploy \
+  build/install_flags/env_python3_deploy \
+  build/install_flags/env_python3_install \
+  build/install_flags/dep_blasrmc \
+  build/install_flags/dep_mcutils
+
+	mkdir -p bin install_flags
+	mkdir -p lib
+	mkdir -p include
+	ln -rsf build/envs/pacbio/include/htslib include/htslib
+	ln -rsf build/envs/pacbio/lib/libhts.a lib/libhts.a
+
+
+# mcutils
+	ln -rsf mcutils/src/samToBed bin/samToBed
+	ln -rsf mcutils/src/samLiftover bin/samLiftover
+
+# blasr
+	ln -rsf blasr/alignment/bin/blasrmc bin/blasrmc
+
+# python3
+	ln -rsf build/envs/python3/bin/python3 bin/python3
+	ln -rsf build/envs/python3/bin/python3 bin/python3.6
+	ln -rsf build/envs/python3/bin/ipython3 bin/ipython3
+	ln -rsf build/envs/python3/bin/snakemake bin/snakemake
+
+# python2
+	ln -rsf build/envs/python2/bin/python2 bin/python2
+
+# pacbio
+	ln -rsf build/envs/pacbio/bin/python2 bin/pb_python2
+	ln -rsf build/envs/pacbio/bin/blasr bin/blasr
+	ln -rsf build/envs/pacbio/bin/pbindex bin/pbindex
+	ln -rsf build/envs/pacbio/bin/sawriter bin/sawriter
+	ln -rsf build/envs/pacbio/bin/variantCaller bin/variantCaller
+	ln -rsf build/envs/pacbio/bin/quiver bin/quiver
+	ln -rsf build/envs/pacbio/bin/arrow bin/arrow
+	ln -rsf build/envs/pacbio/bin/bax2bam bin/bax2bam
+	ln -rsf build/envs/pacbio/bin/pbmm2 bin/pbmm2
+
+# Tools
+	ln -rsf build/envs/tools/bin/canu bin/canu
+	ln -rsf build/envs/tools/bin/bedtools bin/bedtools
+	ln -rsf build/envs/tools/bin/vt bin/vt
+	ln -rsf build/envs/tools/bin/tabix bin/tabix
+	ln -rsf build/envs/tools/bin/bgzip bin/bgzip
+	ln -rsf build/envs/tools/bin/samtools bin/samtools
+	ln -rsf build/envs/tools/bin/RepeatMasker bin/RepeatMasker
+	ln -rsf build/envs/tools/bin/trf bin/trf
+	ln -rsf build/envs/tools/bin/bioawk bin/bioawk
+
+	# Flag complete
 	date > $@
 
 
 # Clean
 .PHONY: clean
 clean:
-	make -C conda clean
-	make -C smrtsvtools clean
 	rm -rf bin
 	rm -rf install_flags
