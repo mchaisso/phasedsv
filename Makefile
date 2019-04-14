@@ -1,5 +1,4 @@
 all: local_assembly/shiftSamPos \
-	mcutils/src/samToBed \
   local_assembly/pbgreedyphase/partitionByPhasedSNVs \
   install_flags/dep_conda_link \
   config.sh
