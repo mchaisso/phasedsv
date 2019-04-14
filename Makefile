@@ -10,7 +10,7 @@ install_flags/dep_conda_link:
 	cd dep && make
 
 config.sh:
-	echo "export PATH=$PATH:"${MAKE_DIR}"/dep/bin " > $@
+	echo "export PATH=\$$PATH:"${MAKE_DIR}"dep/bin " > $@
 	echo "# Add any additional configuration here. If your system" >> $@
 	echo "# uses modules, this will likely involve loading required" >> $@
 	echo "# modules.">> $@
