@@ -2,7 +2,7 @@
 	path = mcutils
 	url = https://github.com/mchaisso/mcutils.git
 	ignore = dirty
-[submodule "blasr"]
+[submodule "dep/blasr"]
 	path = blasr
 	url = https://github.com/mchaisso/blasr.git
 	ignore = dirty

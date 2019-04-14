@@ -1,4 +1,0 @@
-export PATH_TO_PHASEDSV=**FULL PATH TO PHASEDSV***
-export LD_LIBRARY_PATH=$PATH_TO_PHASEDSV/phasedsv/quiver/lib:$LD_LIBRARY_PATH
-export PATH=$PATH_TO_PHASEDSV/phasedsv/quiver/bin:$PATH
-

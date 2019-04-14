@@ -1,5 +1,0 @@
-#!/panfs/cmb-panasas2/mchaisso/distros/pitchfork/deployment/bin/python2.7
-
-import pydoc
-if __name__ == '__main__':
-    pydoc.cli()
