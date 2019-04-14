@@ -9,3 +9,6 @@
 [submodule "dep/mcutils"]
 	path = dep/mcutils
 	url = https://github.com/mchaisso/mcutils
+[submodule "local_assembly/pbgreedyphase"]
+	path = local_assembly/pbgreedyphase
+	url = https://github.com/mchaisso/pbgreedyphase
