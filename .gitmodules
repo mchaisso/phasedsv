@@ -11,3 +11,6 @@
 [submodule "hgsvg"]
 	path = hgsvg
 	url = http://github.com/mchaisso/hgsvg
+[submodule "dep/blasr"]
+	path = dep/blasr
+	url = https://github.com/mchaisso/blasr
