@@ -45,7 +45,7 @@ assembly.consensus.fasta.sam: assembly.consensus.fasta
 	bedtools slop -i region.bed -g $(REF).fai -b 10000 | awk '{ print $$1":"$$2"-"$$3;}' > region.wide
 	region=`cat region.wide`
 	samtools faidx $(REF) `cat region.wide` > target.ref.fasta
-	$(MAKE_DIR)/../hgsvg/blasr/alignment/bin/blasr assembly.consensus.fasta target.ref.fasta -sam -bestn 1 -maxMatch 30 -sdpTupleSize 9 -indelRate 3 -affineAlign -affineOpen 8 -affineExtend 0  -clipping soft | $(MAKE_DIR)/shiftSamPos > $@
+	$(MAKE_DIR)/../dep/bin/blasrmc assembly.consensus.fasta target.ref.fasta -sam -bestn 1 -maxMatch 30 -sdpTupleSize 9 -indelRate 3 -affineAlign -affineOpen 8 -affineExtend 0  -clipping soft | $(MAKE_DIR)/shiftSamPos > $@
 
 clean:
 	echo "Not cleaning up after Canu"
