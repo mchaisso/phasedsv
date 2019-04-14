@@ -9,9 +9,3 @@
 [submodule "dep/mcutils"]
 	path = dep/mcutils
 	url = https://github.com/mchaisso/mcutils
-[submodule "dep/pbsamstream"]
-	path = dep/pbsamstream
-	url = https://github.com/mchaisso/pbsamstream
-[submodule "dep/pbgreedyphase"]
-	path = dep/pbgreedyphase
-	url = https://github.com/mchaisso/pbgreedyphase
