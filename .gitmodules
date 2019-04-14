@@ -2,53 +2,16 @@
 	path = mcutils
 	url = https://github.com/mchaisso/mcutils.git
 	ignore = dirty
-[submodule "local_assembly/pbgreedyphase"]
-	path = local_assembly/pbgreedyphase
-	url = https://github.com/mchaisso/pbgreedyphase.git
-	ignore = dirty
-[submodule "pbsamstream"]
-	path = pbsamstream
-	url = https://github.com/mchaisso/pbsamstream.git
-	ignore = dirty
-[submodule "samtools"]
-	path = samtools
-	url = https://github.com/samtools/samtools.git
-	ignore = dirty
-[submodule "htslib"]
-	path = htslib
-	url = https://github.com/samtools/htslib.git
-	ignore = dirty
 [submodule "blasr"]
 	path = blasr
 	url = https://github.com/mchaisso/blasr.git
 	ignore = dirty
-[submodule "hgsvg"]
-	path = hgsvg
-	url = https://github.com/EichlerLab/hgsvg.git
-	ignore = dirty
-[submodule "vt"]
-	path = vt
-	url = https://github.com/atks/vt.git
-	ignore = dirty
-[submodule "local_assembly/blasr"]
-	path = local_assembly/blasr
-	url = https://github.com/mchaisso/blasr.git
-	ignore = dirty
-[submodule "hdf5"]
-	path = hdf5
-	url = https://github.com/mortenpi/hdf5.git
-[submodule "pbcommand"]
-	path = pbcommand
-	url = https://github.com/PacificBiosciences/pbcommand
-[submodule "ConsensusCore"]
-	path = ConsensusCore
-	url = https://github.com/PacificBiosciences/ConsensusCore
-[submodule "unanimity"]
-	path = unanimity
-	url = https://github.com/PacificBiosciences/unanimity.git
-[submodule "GenomicConsensus"]
-	path = GenomicConsensus
-	url = https://github.com/PacificBiosciences/GenomicConsensus
-[submodule "h5py"]
-	path = h5py
-	url = https://github.com/h5py/h5py.git
+[submodule "dep/mcutils"]
+	path = dep/mcutils
+	url = https://github.com/mchaisso/mcutils
+[submodule "dep/pbsamstream"]
+	path = dep/pbsamstream
+	url = https://github.com/mchaisso/pbsamstream
+[submodule "dep/pbgreedyphase"]
+	path = dep/pbgreedyphase
+	url = https://github.com/mchaisso/pbgreedyphase
