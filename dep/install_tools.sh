@@ -15,5 +15,4 @@ conda install -y \
     trf==4.09 \
     repeatmasker==4.0.8 \
     bioawk==1.0 \
-    vcflib==1.0.0 \
     ucsc-bedToBigBed==377
