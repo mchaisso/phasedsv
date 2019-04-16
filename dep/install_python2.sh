@@ -10,8 +10,6 @@ conda install -y \
     python==2.7.15 \
     six==1.12.0 \
     scipy==1.1.0 \
-    numpy==1.15.4 \
-    matplotlib==2.2.3 \
     pandas==0.23.4 \
     pysam==0.15.1 \
     networkx==2.2 \

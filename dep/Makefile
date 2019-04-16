@@ -135,48 +135,48 @@ install_flags/dep_conda_link: build/install_flags/env_pacbio_deploy   build/inst
 	mkdir -p bin install_flags
 	mkdir -p lib
 	mkdir -p include
-	ln -rsf build/envs/pacbio/include/htslib include/htslib
-	ln -rsf build/envs/pacbio/lib/libhts.a lib/libhts.a
+	ln -sf $(MAKE_DIR)build/envs/pacbio/include/htslib $(MAKE_DIR)/include/htslib
+	ln -sf $(MAKE_DIR)build/envs/pacbio/lib/libhts.a $(MAKE_DIR)/lib/libhts.a
 
 
 # mcutils
-	ln -rsf mcutils/src/samToBed bin/samToBed
-	ln -rsf mcutils/src/samLiftover bin/samLiftover
+	ln -sf $(MAKE_DIR)mcutils/src/samToBed $(MAKE_DIR)/bin/samToBed
+	ln -sf $(MAKE_DIR)mcutils/src/samLiftover $(MAKE_DIR)/bin/samLiftover
 
 # blasr
-	ln -rsf blasr/alignment/bin/blasrmc bin/blasrmc
+	ln -sf $(MAKE_DIR)blasr/alignment/bin/blasrmc $(MAKE_DIR)/bin/blasrmc
 
 # python3
-	ln -rsf build/envs/python3/bin/python3 bin/python3
-	ln -rsf build/envs/python3/bin/python3 bin/python3.6
-	ln -rsf build/envs/python3/bin/ipython3 bin/ipython3
-	ln -rsf build/envs/python3/bin/snakemake bin/snakemake
+	ln -sf $(MAKE_DIR)build/envs/python3/bin/python3 $(MAKE_DIR)/bin/python3
+	ln -sf $(MAKE_DIR)build/envs/python3/bin/python3 $(MAKE_DIR)/bin/python3.6
+	ln -sf $(MAKE_DIR)build/envs/python3/bin/ipython3 $(MAKE_DIR)/bin/ipython3
+	ln -sf $(MAKE_DIR)build/envs/python3/bin/snakemake $(MAKE_DIR)/bin/snakemake
 
 # python2
-	ln -rsf build/envs/python2/bin/python2 bin/python2
+	ln -sf $(MAKE_DIR)build/envs/python2/bin/python2 $(MAKE_DIR)/bin/python2
 
 # pacbio
-	ln -rsf build/envs/pacbio/bin/python2 bin/pb_python2
-	ln -rsf build/envs/pacbio/bin/blasr bin/blasr
-	ln -rsf build/envs/pacbio/bin/pbindex bin/pbindex
-	ln -rsf build/envs/pacbio/bin/sawriter bin/sawriter
-	ln -rsf build/envs/pacbio/bin/variantCaller bin/variantCaller
-	ln -rsf build/envs/pacbio/bin/quiver bin/quiver
-	ln -rsf build/envs/pacbio/bin/arrow bin/arrow
-	ln -rsf build/envs/pacbio/bin/bax2bam bin/bax2bam
-	ln -rsf build/envs/pacbio/bin/pbmm2 bin/pbmm2
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/python2 $(MAKE_DIR)/bin/pb_python2
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/blasr $(MAKE_DIR)/bin/blasr
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/pbindex $(MAKE_DIR)/bin/pbindex
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/sawriter $(MAKE_DIR)/bin/sawriter
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/variantCaller $(MAKE_DIR)/bin/variantCaller
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/quiver $(MAKE_DIR)/bin/quiver
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/arrow $(MAKE_DIR)/bin/arrow
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/bax2bam $(MAKE_DIR)/bin/bax2bam
+	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/pbmm2 $(MAKE_DIR)/bin/pbmm2
 
 # Tools
-	ln -rsf build/envs/tools/bin/canu bin/canu
-	ln -rsf build/envs/tools/bin/bedtools bin/bedtools
-	ln -rsf build/envs/tools/bin/vt bin/vt
-	ln -rsf build/envs/tools/bin/tabix bin/tabix
-	ln -rsf build/envs/tools/bin/bgzip bin/bgzip
-	ln -rsf build/envs/tools/bin/samtools bin/samtools
-	ln -rsf build/envs/tools/bin/RepeatMasker bin/RepeatMasker
-	ln -rsf build/envs/tools/bin/trf bin/trf
-	ln -rsf build/envs/tools/bin/bioawk bin/bioawk
-	ln -rss build/envs/tools/bin/bedToBigBed bin/bedToBigBed
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/canu $(MAKE_DIR)/bin/canu
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/bedtools $(MAKE_DIR)/bin/bedtools
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/vt $(MAKE_DIR)/bin/vt
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/tabix $(MAKE_DIR)/bin/tabix
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/bgzip $(MAKE_DIR)/bin/bgzip
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/samtools $(MAKE_DIR)/bin/samtools
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/RepeatMasker $(MAKE_DIR)/bin/RepeatMasker
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/trf $(MAKE_DIR)/bin/trf
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/bioawk $(MAKE_DIR)/bin/bioawk
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/bedToBigBed $(MAKE_DIR)/bin/bedToBigBed
 
 	# Flag complete
 	date > $@
