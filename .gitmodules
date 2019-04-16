@@ -7,3 +7,6 @@
 [submodule "dep/blasr"]
 	path = dep/blasr
 	url = https://github.com/mchaisso/blasr
+[submodule "hgsvg"]
+	path = hgsvg
+	url = https://github.com/eichlerlab/hgsvg
