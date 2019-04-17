@@ -1,12 +1,16 @@
 [submodule "dep/mcutils"]
 	path = dep/mcutils
 	url = https://github.com/mchaisso/mcutils
+	ignore = dirty
 [submodule "local_assembly/pbgreedyphase"]
 	path = local_assembly/pbgreedyphase
 	url = https://github.com/mchaisso/pbgreedyphase
+	ignore = dirty
 [submodule "dep/blasr"]
 	path = dep/blasr
 	url = https://github.com/mchaisso/blasr
+	ignore = dirty
 [submodule "hgsvg"]
 	path = hgsvg
 	url = https://github.com/eichlerlab/hgsvg
+	ignore = dirty
