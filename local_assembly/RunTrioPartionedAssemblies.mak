@@ -29,7 +29,7 @@ region.vcf:
 h0.sam: region.vcf
 	head -1 $(BAMS) | xargs -i samtools view -H {} > reads.sam
 	cat $(BAMS) | xargs -i samtools view -q 30 {} $(STREGION)  |  sed -e "s/qi/iq/" -e "s/qd/dq/" -e "s/qs/sq/" -e "s/qm/mq/" -e "s/td/dt/" -e "s/ts/st/" >> reads.sam
-	$(MAKE_DIR)/../mcutils/src/samToBed reads.sam | $(MAKE_DIR)/DetectChimeras.py > filter.list
+	samToBed reads.sam | $(MAKE_DIR)/DetectChimeras.py > filter.list
 	grep -v -f filter.list reads.sam | $(MAKE_DIR)/RemoveShortSubreads.py 500 | $(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam /dev/stdin --rgn $(REGION) --pad 100000 --h1 h0.sam --h2 h1.sam --ref $(REF) --minGenotyped 1 --summary summary.txt --sample $(SAMPLE) --unassigned unassigned.sam --minScoreDifference 1 --nw-window 7
 	-cp h0.sam h0.sam.bak
 	-cp h1.sam h1.sam.bak

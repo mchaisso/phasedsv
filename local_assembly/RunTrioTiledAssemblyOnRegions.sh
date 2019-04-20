@@ -137,4 +137,6 @@ echo "cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $JOBN
 #
 # Local (to node) assemble cluster.
 #
+
+
 cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $DIR/params.txt -j $JOBNAME -a $BASE/RunTrioPartionedAssemblies.mak -d $DIR
