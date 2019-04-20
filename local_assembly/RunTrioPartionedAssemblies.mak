@@ -1,7 +1,6 @@
 # configuration for paths, etc
 
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-include $(MAKE_DIR)/Configure.mak
 
 
 COVERAGE?=10

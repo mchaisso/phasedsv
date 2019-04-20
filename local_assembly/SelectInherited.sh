@@ -61,7 +61,7 @@ echo $region | tr ":-" "\t\t" > $member.query.bed
 
 head -1 $bams | xargs -i samtools view -H {} > $member.reads.sam
 cat $bams | xargs -i samtools view -q 30 {} $region  |  sed -e "s/qi/iq/" -e "s/qd/dq/" -e "s/qs/sq/" -e "s/qm/mq/" -e "s/td/dt/" -e "s/ts/st/" >> $member.reads.sam
-$BASE/../mcutils/src/samToBed $member.reads.sam | $BASE/DetectChimeras.py > $member.filter.list
+samToBed $member.reads.sam | $BASE/DetectChimeras.py > $member.filter.list
 
 inherit=`tabix $inherited $region | bedtools intersect -a stdin -b $member.query.bed | cut -f 4`
 chrom=`tabix $inherited $region | bedtools intersect -a stdin -b $member.query.bed | cut -f 5`

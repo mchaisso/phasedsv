@@ -2,18 +2,20 @@
 
 BASE=$(dirname $0)
 SAM=$1
-if [ $READ_SOURCE="HGSVG_BAM" ]; then
-		$BASE/blasr/pbihdfutils/bin/samtobas $SAM $SAM.bas.h5 -defaultToP6
-		$BASE/blasr/alignment/bin/blasr $SAM.bas.h5 assembly.fasta  \
-				-clipping subread -sam -nproc 8 -out  /dev/stdout -preserveReadTitle | \
-				samtools view -bS - | \
-				samtools sort -T tmp -o assembly.bam
+READ_SOURCE=$2
+pbmm2 index assembly.fasta assembly.fasta.mmi
+a=$(basename $SAM)
+b=${a%.*}
+
+if [ "$READ_SOURCE"="HGSVG_BAM" ]; then
+    echo "cat $SAM | $BASE/ReformatHGSVGSam.py | samtools view -bhS - -o $b.bam"
+    cat $SAM | $BASE/ReformatHGSVGSam.py | samtools view -bhS - -o $b.bam
 else
-	$BASE/blasr/alignment/bin/blasr $SAM assembly.fasta  \
-        -clipping subread -passthrough -sam -nproc 8 -out  /dev/stdout -preserveReadTitle | \
-        $BASE/../pbsamstream/pbsamstream  - | \
-        $BASE/../samtools/samtools view -bS - | $BASE/../samtools/samtools sort -T tmp -o assembly.bam
+    samtools view -bhS $SAM -o $b.bam
 fi
+pbmm2 align --sort assembly.fasta.mmi $b.bam assembly.bam 
+pbindex assembly.bam
+
 
 		
 
