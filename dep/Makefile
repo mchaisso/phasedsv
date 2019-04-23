@@ -37,7 +37,7 @@ build/install_flags/env_python2_install: build/install_flags/env_python2_deploy
 	@set -e; \
 	cd build; \
 	. bin/activate python2; \
-        echo "source $(abspath install_python2.sh);" \
+        echo "source $(abspath install_python2.sh)"; \
 	source $(abspath install_python2.sh); \
 	conda list > PACKAGES_PYTHON2; \
 	. bin/deactivate
@@ -154,6 +154,7 @@ install_flags/dep_conda_link: build/install_flags/env_pacbio_deploy   build/inst
 
 # python2
 	ln -sf $(MAKE_DIR)build/envs/python2/bin/python2 $(MAKE_DIR)/bin/python2
+	ln -sf $(MAKE_DIR)build/envs/python2/bin/python2 $(MAKE_DIR)/bin/python
 
 # pacbio
 	ln -sf $(MAKE_DIR)build/envs/pacbio/bin/python2 $(MAKE_DIR)/bin/pb_python2
