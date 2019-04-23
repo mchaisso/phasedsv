@@ -11,6 +11,7 @@ conda install -y \
     pandas==0.20.3 \
     scipy==0.19.1 \
     pysam==0.15.1 \
+    networkx==2.2 \
     snakemake==5.3.0 \
     biopython==1.72 \
     ipython==7.2.0 \
