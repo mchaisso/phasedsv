@@ -38,7 +38,7 @@ h1.sam: region.vcf reads.sam
 reads.sam:
 	samtools view -H `head -1 $(BAMS)` > $@.full
 	cat $(BAMS) | xargs -i samtools view  -q 30 {} $(CHROM):$(START)-$(END) >> $@.full
-	$(MAKE_DIR)/../mcutils/src/samToBed $@.full | $(MAKE_DIR)/DetectChimeras.py > filter.list
+	samToBed $@.full | $(MAKE_DIR)/DetectChimeras.py > filter.list
 	grep -v -f filter.list $@.full > $@
 
 

@@ -82,7 +82,7 @@ echo "starting" $DIR
 
 PARAMS=`cat $PARAMFILE | tr "\n" " "`
 source $PARAMFILE
-source $BASE/../setup_phasedsv.sh
+source $BASE/../config.sh
 
 mkdir -p $DEST/samfiles
 mkdir -p $DEST/assemblies
@@ -137,4 +137,6 @@ echo "cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $JOBN
 #
 # Local (to node) assemble cluster.
 #
+
+
 cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $DIR/params.txt -j $JOBNAME -a $BASE/RunTrioPartionedAssemblies.mak -d $DIR

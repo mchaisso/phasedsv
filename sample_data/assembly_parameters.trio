@@ -1,0 +1,16 @@
+REF=
+BAMS=/home/cmb-16/mjc/projects/phased-sv/test_run/ch.fofn
+VCF=/home/cmb-16/mjc/projects/phased-sv/test_run/PhasedSVTestData/rgn1.vcf.gz
+SAMPLE=HG00733
+DEST=asm
+
+#
+# Parameters for pulling reads from parents.
+#
+FABAMS=/home/cmb-16/mjc/projects/phased-sv/test_run.2/fa.fofn
+MOBAMS=/home/cmb-16/mjc/projects/phased-sv/test_run.2/mo.fofn
+FA=HG00731
+MO=HG00732
+MO_INHERIT=/home/cmb-16/mjc/projects/phased-sv/test_run.2/mo.bed.gz
+FA_INHERIT=/home/cmb-16/mjc/projects/phased-sv/test_run.2/fa.bed.gz
+

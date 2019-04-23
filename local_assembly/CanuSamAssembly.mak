@@ -1,7 +1,7 @@
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 MIN_QUALITY?=20
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-include $(MAKE_DIR)/Configure.mak
+
 SHELL=/bin/bash
 
 # other setup
@@ -21,22 +21,22 @@ reads.fasta: $(SAM)
 
 
 assembly.fasta: reads.fasta
-	$(CANU_DIR)/canu -pacbio-raw reads.fasta genomeSize=60000 -d assembly -p asm useGrid=false  gnuplotTested=true  corMhapSensitivity=high corMinCoverage=1 cnsThreads=4 ovlThreads=4 mhapThreads=4 contigFilter="2 1000 1.0 1.0 2"
+	canu -pacbio-raw reads.fasta genomeSize=60000 -d assembly -p asm useGrid=false corMhapSensitivity=high corMinCoverage=1 cnsThreads=4 ovlThreads=4 mhapThreads=4 contigFilter="2 1000 1.0 1.0 2"
 	if [ -s assembly/asm.contigs.fasta ]; then \
     cp assembly/asm.contigs.fasta $@; \
   fi
 
 assembly.bam: assembly.fasta $(SAM)
-	export READ_SOURCE=$(READ_SOURCE) && $(MAKE_DIR)/MakeBamVersionWrapper.sh $(SAM)
+	export READ_SOURCE=$(READ_SOURCE) && $(MAKE_DIR)/MakeBamVersionWrapper.sh $(SAM) $(READ_SOURCE)
 	samtools index assembly.bam
 
 assembly.bam.pbi: assembly.bam
-	$(MAKE_DIR)/../quiver/bin/pbindex assembly.bam
+	pbindex assembly.bam
 
 assembly.consensus.fasta: assembly.bam assembly.bam.pbi assembly.fasta
 	samtools faidx assembly.fasta
 	echo $(PYTHONPATH)
-	$(MAKE_DIR)/../quiver/bin/quiver  -j4 --minCoverage 7 --noEvidenceConsensusCall nocall --referenceFilename assembly.fasta assembly.bam -o $@
+	$(MAKE_DIR)/RunConsensusTool.sh assembly.fasta assembly.bam $@ $(READ_SOURCE)
 	awk '{ if (substr($$1,0,1) == ">") {print $$1"/$(HAP)";} else { print;} }' $@ > $@.tmp
 	mv -f $@.tmp $@
 

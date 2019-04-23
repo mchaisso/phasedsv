@@ -78,7 +78,7 @@ echo "RUNNING IN " $DIR/$REGION
 #
 
 echo "setting up"
-source $BASE/../setup_phasedsv.sh
+source $BASE/../config.sh
 
 if [ -e $DEST/assemblies/$REGION.fasta ]; then
 	 echo $DEST/assemblies/$REGION.fasta
