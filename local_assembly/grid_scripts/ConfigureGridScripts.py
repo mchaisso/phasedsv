@@ -15,6 +15,7 @@ ap.add_argument("--runTrio", help="Prepare commands for trio assembly.", default
 ap.add_argument("--grid", help="Grid type", choices=["sge", "pbs", "slurm"], required=True)
 ap.add_argument("--base", help="base name for grid commands", default="psv_grid")
 ap.add_argument("--conc", help="Number of concurrent jobs", default="50")
+ap.add_argument("--grouped", help="(SLURM only) Some cluster configurations do not allow very many array jobs. Normally execution is one region assembled per job, which enables fine-scale job management at the cost of high load on the CMS. This instead makes one job run many (~1000) regions per job. Since each job takes up to 5 minutes, this can take up to 3-4 days per job.", default=0, required=False, type=int)
 ap.add_argument("--config", help="Extra configuration parameters for job submission, for example specification of a specific queue, etc", default="")
 
 args=ap.parse_args()
@@ -30,18 +31,34 @@ if args.grid == "slurm":
     gridFileName=args.base+".run.sh"
     gf=open(gridFileName,'w')
     gf.write("#!/usr/bin/env bash\n")
-    gf.write(assemblyScript +" `awk \"NR == $SLURM_ARRAY_TASK_ID\" " + args.regions + " ` " + args.params + "\n")
-    gf.close()
+    nBins = 0
+    if args.grouped > 0:
+        regionsPerJob = numRegions // args.grouped +  1
+        gf.write("for i in {{1..{}}}; do\n".format(regionsPerJob))
+        gf.write("   index=$(($i*{} + $SLURM_ARRAY_TASK_ID))\n".format(args.grouped))
+        gf.write("   " + assemblyScript +" `awk \"NR == $index\" " + args.regions + " ` " + args.params + "\n")       
+        gf.write("done\n")
+        gf.close()
 
-    submit=args.base+".submit.sh"
-    sf=open(submit,'w')
-    sf.write("#!/usr/bin/env bash\n")
-    sf.write("sbatch --cpus-per-task=4 --mem=4G --time=1:00:00 --array=1-{}%{} {} {}\n".format(numRegions, args.conc, gridFileName, args.config))
-    sf.close()
+        submit=args.base+".submit.sh"
+        sf=open(submit,'w')
+        sf.write("#!/usr/bin/env bash\n")
+        sf.write("sbatch --cpus-per-task=4 --mem=4G --time=72:00:00 --array=0-{}%{} {} {}\n".format(args.grouped-1, args.conc, gridFileName, args.config))
+        sf.close()
 
-    print "\nCreated job script '" + gridFileName + "'"
-    print "Created submission script '" + submit+ "'.  You may need to modify"
-    print "the submission script for custom array parameters at your site."
+    else:
+        gf.write(assemblyScript +" `awk \"NR == $SLURM_ARRAY_TASK_ID\" " + args.regions + " ` " + args.params + "\n")
+        gf.close()
+
+        submit=args.base+".submit.sh"
+        sf=open(submit,'w')
+        sf.write("#!/usr/bin/env bash\n")
+        sf.write("sbatch --cpus-per-task=4 --mem=4G --time=1:00:00 --array=1-{}%{} {} {}\n".format(numRegions, args.conc, gridFileName, args.config))
+        sf.close()
+        
+    print("\nCreated job script '" + gridFileName + "'")
+    print("Created submission script '" + submit+ "'.  You may need to modify")
+    print("the submission script for custom array parameters at your site.")
 
 def GetMaxTasks():
     cmd="qconf -sconf"

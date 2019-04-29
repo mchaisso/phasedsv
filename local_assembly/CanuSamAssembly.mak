@@ -21,9 +21,9 @@ reads.fasta: $(SAM)
 
 
 assembly.fasta: reads.fasta
-	canu -pacbio-raw reads.fasta genomeSize=60000 -d assembly -p asm useGrid=false corMhapSensitivity=high corMinCoverage=1 cnsThreads=4 ovlThreads=4 mhapThreads=4 contigFilter="2 1000 1.0 1.0 2"
+	canu -pacbio-raw reads.fasta genomeSize=60000 -d assembly -p asm useGrid=false corMhapSensitivity=high corMinCoverage=1 cnsThreads=4 ovlThreads=4 mhapThreads=4 contigFilter="2 1000 1.0 1.0 2" stopOnLowCoverage=5
 	if [ -s assembly/asm.contigs.fasta ]; then \
-    cp assembly/asm.contigs.fasta $@; \
+    $(MAKE_DIR)/FilterCanuContigsByStats.py assembly/asm.contigs.fasta $@ 10 5.0 ; \
   fi
 
 assembly.bam: assembly.fasta $(SAM)

@@ -11,11 +11,11 @@ import sys
 seen = {}
 
 for line in sys.stdin:
-	if line[0] == "@":
+        if line[0] == "@":
             sys.stdout.write(line)
             continue
-	v = line.split()
-	if v[0] in seen:
+        v = line.split()
+        if v[0] in seen:
             continue
         if args.minSubreadLength is not None:
             name = v[0]
@@ -24,6 +24,6 @@ for line in sys.stdin:
             if subreadLen < args.minSubreadLength:
                 continue
         seen[v[0]] = True
-	sys.stdout.write(">" + v[0]+ "\n")
-	sys.stdout.write(v[9] +"\n")
+        sys.stdout.write(">" + v[0]+ "\n")
+        sys.stdout.write(v[9] +"\n")
 

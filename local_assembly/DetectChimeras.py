@@ -29,7 +29,7 @@ def Overlaps(a,b, idx=1):
 def Duplicate(a,b):
     return (a==b)
 
-for readName, readAlns in reads.iteritems():
+for readName, readAlns in reads.items():
     if (len(readAlns) > 1):
         for i in range(0,len(readAlns)-1):
             for j in range(i+1,len(readAlns)):

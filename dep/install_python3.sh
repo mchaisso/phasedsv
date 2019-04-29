@@ -8,7 +8,7 @@ pip install --upgrade pip
 
 conda install -y \
     numpy==1.13.1 \
-    pandas==0.20.3 \
+    pandas==0.21.1 \
     scipy==0.19.1 \
     pysam==0.15.1 \
     networkx==2.2 \

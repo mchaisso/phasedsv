@@ -2,7 +2,7 @@
 
 import sys
 import argparse
-from sets import Set
+
 ap = argparse.ArgumentParser(description="Format fasta for falcon reading")
 ap.add_argument("--fakename", help="Copy the name of the first movie into all for local assembly.", default=False, action='store_true')
 ap.add_argument("--unique", help="When there are multiple reads with the same name, only print one", action='store_true', default=False)
@@ -11,7 +11,7 @@ args = ap.parse_args()
 
 movieIndex = 1
 firstMovieName = None
-seen = Set()
+seen = set()
 
 for line in sys.stdin.readlines():
     if (line[0] == '>'):
@@ -30,9 +30,9 @@ for line in sys.stdin.readlines():
         i = 0
         if (origTitle in seen and args.unique):
             continue
-        print title
+        print(title)
         while (i < len(line) and (args.maxLength == 0 or i < args.maxLength)):
             e = min(i+L,len(line))
-            print line[i:e].strip()
+            print(line[i:e].strip())
             i+=L
         seen.add(origTitle)

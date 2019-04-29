@@ -1,6 +1,6 @@
 # configuration for paths, etc
 MAKE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-include $(MAKE_DIR)/Configure.mak
+
 
 
 COVERAGE?=10
@@ -32,7 +32,11 @@ region.vcf:
 	tabix -h $(VCF) $(STREGION) > $@
 
 h1.sam: region.vcf reads.sam 
-	$(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam $@ --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE)
+	$(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam reads.sam --h1 h1.sam --h2 h2.sam --rgn $(REGION) --ref $(REF) --nw-window 5 --minGenotyped 1 $(AUTO) --sample $(SAMPLE) >& summary.txt
+	echo "h1" >> summary.txt
+	grep  "^@" h1.sam | wc -l >> summary.txt
+	echo "h2" >> summary.txt
+	grep  "^@" h2.sam | wc -l >> summary.txt
 
 
 reads.sam:
@@ -56,19 +60,21 @@ h2/assembly.consensus.fasta.sam: h2.sam h1/assembly.consensus.fasta.sam
   fi
 
 h1.var.sam: h1/assembly.consensus.fasta.sam
-	cat h1/assembly.consensus.fasta.sam | awk '{ $$1=$$1"/1"; print; }' | tr " " "\t" > h1.var.sam 
-	cp h1/assembly.consensus.fasta h1.fasta
+	touch $@
+	-cat h1/assembly.consensus.fasta.sam | awk '{ $$1=$$1"/1"; print; }' | tr " " "\t" > h1.var.sam 
+	-cp h1/assembly.consensus.fasta h1.fasta
 
 h2.var.sam: h2/assembly.consensus.fasta.sam
-	cat h2/assembly.consensus.fasta.sam  | awk '{ $$1=$$1"/2"; print; }' | tr " " "\t" > h2.var.sam 
-	cp h2/assembly.consensus.fasta h2.fasta
+	touch $@
+	-cat h2/assembly.consensus.fasta.sam  | awk '{ $$1=$$1"/2"; print; }' | tr " " "\t" > h2.var.sam 
+	-cp h2/assembly.consensus.fasta h2.fasta
 
 
 assembly.consensus.fasta.sam: h1.var.sam h2.var.sam
 	cp h1.var.sam $@
 	grep -v "^@" h2.var.sam >> $@
-	cat h1.fasta | tr "|" "_" | awk '{ if (substr($$1,0,1) == ">") {print $$1"/1";} else{ print $$1;} }' > assembly.consensus.fasta
-	cat h2.fasta | tr "|" "_" | awk '{ if (substr($$1,0,1) == ">") {print $$1"/2";} else{ print $$1;} }' >> assembly.consensus.fasta
+	-cat h1.fasta | tr "|" "_" | awk '{ if (substr($$1,0,1) == ">") {print $$1"/1";} else{ print $$1;} }' > assembly.consensus.fasta
+	-cat h2.fasta | tr "|" "_" | awk '{ if (substr($$1,0,1) == ">") {print $$1"/2";} else{ print $$1;} }' >> assembly.consensus.fasta
 
 clean:
 	rm -rf 0-rawreads/    2-asm-falcon/	 alignment.sam		   assembly.fasta      input.fofn  reads.bas.h5  scripts/ 1-preads_ovl/  alignment.cmp.h5  assembly.fasta.fai  reads.bam   reads.fasta	 sge_log/ assembly.bam aligend_reads.vcf aligned_reads.bam aligned_reads.bam.bai aligned_reads.bam.nft  assembly.consensus.fasta.fai  h1 h2 reads.sam 

@@ -52,8 +52,8 @@ for rec in vcfFile.fetch(chrom,start,end):
 
 
 if len(phased) < args.minSites:
-    print "1"
+    print("1")
 else:
-    print "0"
+    print("0")
 
 

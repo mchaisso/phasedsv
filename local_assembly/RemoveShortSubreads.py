@@ -8,10 +8,9 @@ for line in sys.stdin:
         continue
     vals = line.split()
     title = vals[0].split("/")
-    
-    if len(title) == 3:
-        sr = title[2].split("_")
-        srLen = int(sr[1]) - int(sr[0])
-        if srLen > minLength:
-            sys.stdout.write(line)
+
+
+    srLen=len(vals[9])
+    if srLen > minLength:
+        sys.stdout.write(line)
             

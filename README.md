@@ -45,13 +45,33 @@ correctly formatted bam files.
    2.2. Create assembly parameter file.
    The assembly parameter file describing the source data for the
    file, with key=value format for assigning variables in BASH. This requires the following keys: 
-      `REF`   : The full path to the reference reads are aligned to. 
+      `REF`   : The full path to the reference. It must be indexed
+                by samtools faidx.
       `BAMS`  : The path to the bam file of file names. This is one line per
-	   bam, with the full path to the file. 
+	              bam, with the full path to the file. 
       `VCF`   : The VCF file that has the phased SNVs. 
       `SAMPLE`: The name of the sample that is being assembled (the sample ID
 	     in the VCF file).
       `DEST`  : The top level directory where the assemblies, alignments, and records will go.
+
+	 If you are assembling pooling parental reads, the 
+
+    `FABAMS`  : Full path to the father read fofn.
+    `MOBAMS`  : Full path to mother read fofn.
+    `FA`      : Sample ID of the father. This must be the same as the
+                entry in the VCF.
+    `MO`      : Sample ID of the mother.
+    `MO_INHERIT` : Path to the bgzip&tabix indexed regions inherited
+    from the mother. 
+		`FA_INHERIT` : Path to the bgzip&tabix indexed regions inherited
+    from the mother. 
+
+The MO_INHERIT and FA_INHERIT .bed.gz files can be created with the
+following command:
+`hgsvg/phasing/DetermineInheritance.sh  --vcf phasing.vcf.gz --child
+HG00733 --fa HG00731 --mo HG00732 --faBed fa.bed --moBed mo.bed`
+This will create fa.bed.gz, and mo.bed.gz
+
   An example file is given in assembly_parameters.template.
 
   If you are assembling sample HGSVG data you will have to
@@ -60,6 +80,8 @@ correctly formatted bam files.
   The HGSVG bams were created with legacy code that require additional
   scripts for the current pipeline to manage. Adding this parameter
   will enable that. 
+
+
 
    2.3 Define regions.
     Define the regions that will be assembled. These can be copied
@@ -72,7 +94,6 @@ correctly formatted bam files.
 	   files that contain the regions which the parental reads may be
 	   unambiguously assigned.  The example below uses the phased vcf
 	   for the Puerto Rican family.
-`hgsvg/phasing/DetermineInheritance.py  --vcf data/rgn1.vcf.gz --child HG00733 --fa HG00731 --mo HG00732 --faBed fa.bed --moBed mo.bed`
 
 3. Run local assemblies.
    3.1 Configure grid environment. 

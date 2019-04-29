@@ -18,7 +18,7 @@ REGION=$1
 shift
 PARAMFILE=$1
 shift
-DIR="asm"
+DIR=$TMPDIR
 DEST="asm"
 ASSEMBLER=$BASE/RunPartitionedAssembly.mak
 
