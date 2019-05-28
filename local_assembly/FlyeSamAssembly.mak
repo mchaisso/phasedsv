@@ -7,13 +7,13 @@ SHELL=/bin/bash
 # other setup
 CWD=$(shell pwd)
 
-all: reads.fasta assembly.fasta assembly.bam assembly.consensus.fasta assembly.consensus.fasta.sam
+all: reads.fasta assembly.consensus.fasta assembly.consensus.fasta.sam assembly.fasta assembly.bam
 
 test:
 	echo "$(inOptions)"
 
 help:
-	@echo "Usage make -f CanuSamAssembly.mak SAM=samfile [REF=reference.fasta] "
+	@echo "Usage make -f FlyeSamAssembly.mak SAM=samfile [REF=reference.fasta] "
 
 
 reads.fasta: $(SAM)
@@ -21,11 +21,8 @@ reads.fasta: $(SAM)
 
 
 assembly.fasta: reads.fasta
-	canu -pacbio-raw reads.fasta genomeSize=60000 -d assembly -p asm useGrid=false corMhapSensitivity=high corMinCoverage=1 cnsThreads=4 ovlThreads=4 mhapThreads=4 contigFilter="2 1000 1.0 1.0 2" stopOnLowCoverage=5
-	if [ -s assembly/asm.contigs.fasta ]; then \
-    $(MAKE_DIR)/FilterCanuContigsByStats.py assembly/asm.contigs.fasta $@ 10 5.0 ; \
-  fi
-
+	. $(MAKE_DIR)/../dep/build/bin/activate python2 && flye --pacbio-raw reads.fasta --genome-size 70000 -o flye -t 4 -i 0
+	cp flye/assembly.fasta $@
 
 assembly.bam: assembly.fasta $(SAM)
 	export READ_SOURCE=$(READ_SOURCE) && $(MAKE_DIR)/MakeBamVersionWrapper.sh $(SAM) $(READ_SOURCE) assembly.fasta assembly.bam
@@ -39,6 +36,7 @@ assembly.consensus.fasta: assembly.bam  assembly.fasta
 	samtools faidx assembly.fasta
 	echo $(PYTHONPATH)
 	$(MAKE_DIR)/RunConsensusTool.sh assembly.fasta assembly.bam $@ $(READ_SOURCE)
+
 
 #assembly.consensus.fasta: assembly.bam assembly.bam.pbi assembly.fasta
 #	samtools faidx assembly.fasta

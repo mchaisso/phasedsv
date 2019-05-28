@@ -178,6 +178,9 @@ install_flags/dep_conda_link: build/install_flags/env_pacbio_deploy   build/inst
 	ln -sf $(MAKE_DIR)build/envs/tools/bin/trf $(MAKE_DIR)/bin/trf
 	ln -sf $(MAKE_DIR)build/envs/tools/bin/bioawk $(MAKE_DIR)/bin/bioawk
 	ln -sf $(MAKE_DIR)build/envs/tools/bin/bedToBigBed $(MAKE_DIR)/bin/bedToBigBed
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/miniasm $(MAKE_DIR)/bin/miniasm
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/minimap2 $(MAKE_DIR)/bin/minimap2
+	ln -sf $(MAKE_DIR)build/envs/tools/bin/flye $(MAKE_DIR)/bin/flye
 
 	# Flag complete
 	date > $@

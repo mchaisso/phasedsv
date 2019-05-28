@@ -89,11 +89,21 @@ mkdir -p $DEST/assemblies
 mkdir -p $DEST/records
 
 mkdir -p $DIR
+if [ -e $DEST/assemblies/$REGIONS.fasta ]; then
+	echo "SKIPPING " $REGIONS
+	exit 0
+fi
 
 echo $REGIONS | tr ";" "\n" | sed '/^\s$/d'>  $DIR/Regions.txt
 
-
-cat $DIR/Regions.txt | tr "\.-" "\t\t" > $DIR/Regions.bed
+for rgn in `cat $DIR/Regions.txt`; do 
+	if [ ! -e $DEST/assemblies/$rgn.fasta ]; then
+		echo $rgn;
+	else
+		echo "SKIPPING " $rgn
+		exit 0
+	fi
+done | tr "\.-" "\t\t" > $DIR/Regions.bed
 bedtools sort -i $DIR/Regions.bed | bedtools merge | awk '{ print $1":"$2"-"$3;}' > $DIR/Regions.rgn
 
 
@@ -140,3 +150,4 @@ echo "cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $JOBN
 
 
 cat $DIR/Regions.txt | xargs -P 3 -I {} $BASE/RunTiledAssembly.sh {} $DIR/params.txt -j $JOBNAME -a $BASE/RunTrioPartionedAssemblies.mak -d $DIR
+rm -rf $DIR

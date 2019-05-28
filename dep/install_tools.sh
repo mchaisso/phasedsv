@@ -15,4 +15,7 @@ conda install -y \
     trf==4.09 \
     repeatmasker==4.0.8 \
     bioawk==1.0 \
-    ucsc-bedToBigBed==377
+    ucsc-bedToBigBed==377 \
+    miniasm \
+    minimap2 \
+		flye

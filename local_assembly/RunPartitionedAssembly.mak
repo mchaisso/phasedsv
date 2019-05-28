@@ -9,7 +9,7 @@ START=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 2)
 END=$(shell echo $(REGION) | tr ":-" "\t\t" | cut -f 3)
 SNVSTART=$($START+$WINDOW)
 SNVEND=$($END-$WINDOW)
-SAMASSEMBLER=$(MAKE_DIR)/CanuSamAssembly.mak
+SAMASSEMBLER?=$(MAKE_DIR)/CanuSamAssembly.mak
 
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 STREGION=$(shell echo $(REGION) | sed 's/\./:/')

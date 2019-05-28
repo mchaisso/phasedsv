@@ -7,7 +7,7 @@ COVERAGE?=10
 SHELL=/bin/bash
 TMPNAME=$(shell echo $(REGION) | sed 's/:/_/')
 STREGION=$(shell echo $(REGION) | sed 's/\./:/')
-SAMASSEMBLER=$(MAKE_DIR)/CanuSamAssembly.mak
+SAMASSEMBLER?=$(MAKE_DIR)/CanuSamAssembly.mak
 
 all: h0.sam h0/h0.fasta h1.sam h1/h1.fasta assembly.consensus.fasta.sam \
   assemblies samfiles results
@@ -33,7 +33,9 @@ h0.sam: region.vcf
 	grep -v -f filter.list reads.sam | $(MAKE_DIR)/RemoveShortSubreads.py 500 | $(MAKE_DIR)/pbgreedyphase/partitionByPhasedSNVs --vcf region.vcf --sam /dev/stdin --rgn $(REGION) --pad 100000 --h1 h0.sam --h2 h1.sam --ref $(REF) --minGenotyped 1 --summary summary.txt --sample $(SAMPLE) --unassigned unassigned.sam --minScoreDifference 1 --nw-window 7
 	-cp h0.sam h0.sam.bak
 	-cp h1.sam h1.sam.bak
-	$(MAKE_DIR)/ConcatenateUnassignedReads.sh $(MAKE_DIR)/ConcatenateUnassignedReads.py $(VCF) $(SAMPLE) $(REGION) 20 unassigned.sam  h0.sam h1.sam
+	grep -v "^@" unassigned.sam >> h0.sam
+	grep -v "^@" unassigned.sam >> h1.sam
+#	$(MAKE_DIR)/ConcatenateUnassignedReads.sh $(MAKE_DIR)/ConcatenateUnassignedReads.py $(VCF) $(SAMPLE) $(REGION) 20 unassigned.sam  h0.sam h1.sam
 
   # partition parents now
 	echo "Selecting from mother"
